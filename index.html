@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ravi Rajaram Singh — Applied AI/ML Engineer</title>
+<meta name="description" content="MS CS (AI/ML) at University at Buffalo. Offline reinforcement learning, sequence models, and applied deep learning.">
+<style>
+/* ============================================================
+   TOKENS
+   ============================================================ */
+:root{
+  --bg:#06080c;
+  --bg-2:#090c12;
+  --surface:#0e1219;
+  --surface-2:#131822;
+  --line:#1e2533;
+  --line-2:#2a3446;
+  --ink:#eef2f8;
+  --ink-2:#a4b0c4;
+  --ink-3:#66738a;
+  --accent:#6ea8fe;
+  --accent-dim:#3d6ab8;
+  --mint:#7ee2c0;
+  --amber:#f0b866;
+  --mono:ui-monospace,"SF Mono",SFMono-Regular,"JetBrains Mono",Menlo,Consolas,monospace;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+  --maxw:1000px;
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;scroll-padding-top:82px}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:var(--sans);font-size:16.5px;line-height:1.68;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+a{color:var(--accent);text-decoration:none}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 26px}
+::selection{background:rgba(110,168,254,.28)}
+
+/* ============================================================
+   ANIMATED BACKDROP
+   ============================================================ */
+.backdrop{position:fixed;inset:0;z-index:-2;pointer-events:none;overflow:hidden}
+.grid-bg{
+  position:absolute;inset:-50%;
+  background-image:
+    linear-gradient(rgba(110,168,254,.045) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(110,168,254,.045) 1px,transparent 1px);
+  background-size:56px 56px;
+  transform:perspective(600px) rotateX(56deg) translateY(0);
+  transform-origin:50% 0;
+  animation:gridDrift 26s linear infinite;
+  opacity:.5;
+  mask-image:radial-gradient(ellipse 80% 60% at 50% 0%,#000 10%,transparent 72%);
+  -webkit-mask-image:radial-gradient(ellipse 80% 60% at 50% 0%,#000 10%,transparent 72%);
+}
+@keyframes gridDrift{to{background-position:0 56px}}
+.orb{position:absolute;border-radius:50%;filter:blur(90px);opacity:.2}
+.orb.a{width:520px;height:520px;background:#2f5fb5;top:-160px;left:-120px;animation:float1 20s ease-in-out infinite}
+.orb.b{width:440px;height:440px;background:#1d6d59;top:38%;right:-160px;animation:float2 25s ease-in-out infinite}
+.orb.c{width:380px;height:380px;background:#3a3f8c;bottom:-120px;left:28%;animation:float1 30s ease-in-out infinite reverse}
+@keyframes float1{0%,100%{transform:translate(0,0)}50%{transform:translate(40px,50px)}}
+@keyframes float2{0%,100%{transform:translate(0,0)}50%{transform:translate(-50px,-40px)}}
+.noise{
+  position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.16;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ============================================================
+   NAV
+   ============================================================ */
+.progress{position:fixed;top:0;left:0;height:2px;z-index:100;
+  background:linear-gradient(90deg,var(--accent),var(--mint));width:0%;transition:width .1s linear}
+nav{
+  position:sticky;top:0;z-index:60;
+  background:rgba(6,8,12,.72);backdrop-filter:blur(16px) saturate(140%);
+  border-bottom:1px solid transparent;transition:border-color .4s ease,background .4s ease;
+}
+nav.stuck{border-bottom-color:var(--line);background:rgba(6,8,12,.9)}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;height:62px;gap:18px}
+.brand{font-family:var(--mono);font-size:13.5px;letter-spacing:.01em;display:flex;align-items:center;gap:9px}
+.brand .dot{width:7px;height:7px;border-radius:50%;background:var(--mint);
+  box-shadow:0 0 0 0 rgba(126,226,192,.6);animation:pulse 2.6s infinite}
+@keyframes pulse{
+  0%{box-shadow:0 0 0 0 rgba(126,226,192,.5)}
+  70%{box-shadow:0 0 0 9px rgba(126,226,192,0)}
+  100%{box-shadow:0 0 0 0 rgba(126,226,192,0)}
+}
+.navlinks{display:flex;gap:4px;font-size:13.5px}
+.navlinks a{
+  color:var(--ink-3);padding:6px 12px;border-radius:7px;position:relative;
+  transition:color .22s ease,background .22s ease;
+}
+.navlinks a:hover{color:var(--ink)}
+.navlinks a.active{color:var(--ink);background:rgba(110,168,254,.09)}
+@media(max-width:760px){.navlinks{display:none}}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+header{padding:120px 0 96px;position:relative}
+.eyebrow{
+  font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--mint);margin-bottom:22px;display:flex;align-items:center;gap:12px;
+}
+.eyebrow::after{content:"";height:1px;flex:1;max-width:120px;
+  background:linear-gradient(90deg,rgba(126,226,192,.5),transparent)}
+h1{
+  font-size:clamp(40px,7.4vw,72px);line-height:1.02;margin:0 0 26px;
+  letter-spacing:-.035em;font-weight:680;
+  background:linear-gradient(178deg,#fff 20%,#93a4bd 96%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.lede{font-size:19px;color:var(--ink-2);max-width:660px;margin:0 0 20px}
+.lede strong{color:var(--ink);font-weight:600}
+.lede em{color:var(--mint);font-style:normal}
+.links{display:flex;flex-wrap:wrap;gap:11px;margin-top:36px}
+.btn{
+  display:inline-flex;align-items:center;gap:9px;padding:11px 19px;
+  border:1px solid var(--line-2);border-radius:10px;background:var(--surface);
+  color:var(--ink);font-size:14.5px;position:relative;overflow:hidden;
+  transition:transform .3s var(--ease),border-color .3s ease,box-shadow .3s ease;
+}
+.btn::before{
+  content:"";position:absolute;inset:0;opacity:0;
+  background:linear-gradient(120deg,transparent,rgba(110,168,254,.14),transparent);
+  transition:opacity .3s ease;
+}
+.btn:hover{transform:translateY(-2px);border-color:var(--accent);
+  box-shadow:0 8px 26px -12px rgba(110,168,254,.6)}
+.btn:hover::before{opacity:1}
+.btn.primary{background:linear-gradient(180deg,#17253d,#111a2b);border-color:#31507f}
+.btn svg{width:15px;height:15px;opacity:.75}
+
+/* scroll cue */
+.cue{margin-top:64px;display:flex;align-items:center;gap:11px;
+  font-family:var(--mono);font-size:11.5px;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--ink-3)}
+.cue span{display:block;width:1px;height:34px;
+  background:linear-gradient(180deg,var(--ink-3),transparent);animation:cueDrop 2.2s ease-in-out infinite}
+@keyframes cueDrop{0%,100%{transform:scaleY(.35);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}}
+
+/* ============================================================
+   SECTIONS
+   ============================================================ */
+section{padding:88px 0;position:relative}
+.sec-head{display:flex;align-items:center;gap:16px;margin-bottom:44px}
+h2{font-size:12.5px;font-family:var(--mono);letter-spacing:.17em;text-transform:uppercase;
+  color:var(--ink-3);margin:0;font-weight:500;white-space:nowrap}
+h2 b{color:var(--accent);font-weight:500;margin-right:8px}
+.rule{height:1px;flex:1;background:linear-gradient(90deg,var(--line),transparent)}
+
+/* ============================================================
+   PROJECT CARD
+   ============================================================ */
+.proj{
+  background:linear-gradient(168deg,rgba(19,24,34,.94),rgba(11,14,20,.94));
+  border:1px solid var(--line);border-radius:18px;padding:36px;margin-bottom:26px;
+  position:relative;overflow:hidden;
+  transition:transform .5s var(--ease),border-color .4s ease,box-shadow .5s ease;
+}
+.proj::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(110,168,254,.5),transparent);
+  opacity:0;transition:opacity .45s ease;
+}
+.proj:hover{transform:translateY(-4px);border-color:var(--line-2);
+  box-shadow:0 26px 60px -32px rgba(0,0,0,.95)}
+.proj:hover::before{opacity:1}
+@media(max-width:640px){.proj{padding:26px 22px}}
+
+.proj-top{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap}
+.proj h3{font-size:23px;margin:0 0 7px;letter-spacing:-.019em;font-weight:640;line-height:1.28}
+.proj .meta{font-family:var(--mono);font-size:11.5px;color:var(--ink-3);margin-bottom:22px;letter-spacing:.02em}
+.badge{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.11em;text-transform:uppercase;
+  padding:5px 12px;border-radius:999px;white-space:nowrap;
+  border:1px solid #2b4a3e;background:rgba(18,36,29,.7);color:var(--mint);
+}
+.badge.wip{border-color:#4a3d20;background:rgba(35,29,16,.7);color:var(--amber)}
+.badge.wip::before{content:"";display:inline-block;width:5px;height:5px;border-radius:50%;
+  background:var(--amber);margin-right:7px;vertical-align:middle;animation:blink 1.9s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+
+.proj p{color:var(--ink-2);margin:0 0 17px}
+.proj p strong{color:var(--ink);font-weight:600}
+.proj code{font-family:var(--mono);font-size:.88em;background:rgba(110,168,254,.1);
+  padding:2px 6px;border-radius:5px;color:#a7c7fb}
+
+h4{font-size:11.5px;font-family:var(--mono);letter-spacing:.13em;text-transform:uppercase;
+  color:var(--ink-3);margin:30px 0 15px;font-weight:500;display:flex;align-items:center;gap:11px}
+h4::after{content:"";height:1px;flex:1;background:var(--line)}
+
+ul.tight{margin:0 0 18px;padding-left:0;list-style:none;color:var(--ink-2)}
+ul.tight li{margin-bottom:11px;padding-left:22px;position:relative}
+ul.tight li::before{content:"";position:absolute;left:2px;top:11px;width:6px;height:1px;background:var(--accent-dim)}
+
+/* results table */
+.tablewrap{overflow-x:auto;margin:0 0 10px;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;font-size:13.5px;min-width:470px}
+th,td{text-align:left;padding:11px 13px;border-bottom:1px solid var(--line)}
+th{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink-3);font-weight:500}
+td{color:var(--ink-2)}
+td.num{text-align:right;font-family:var(--mono);color:var(--ink);font-variant-numeric:tabular-nums}
+tbody tr{transition:background .25s ease}
+tbody tr:hover{background:rgba(110,168,254,.045)}
+tr.win td{color:var(--mint)}
+.barcell{width:130px}
+.bar{display:block;height:7px;border-radius:4px;background:var(--accent-dim);
+  width:0;transition:width 1.1s var(--ease)}
+.bar.win{background:linear-gradient(90deg,var(--mint),#5bc9a5)}
+.revealed .bar{width:var(--w)}
+
+.note{
+  font-size:14px;color:var(--ink-3);border-left:2px solid var(--line-2);
+  padding:4px 0 4px 16px;margin:20px 0 0;
+}
+figure.vid{margin:0 0 6px;padding:0}
+figure.vid video{
+  width:100%;max-width:640px;display:block;border-radius:12px;
+  border:1px solid var(--line);background:#06080c;
+}
+figure.vid figcaption{
+  font-size:13.5px;color:var(--ink-3);margin-top:12px;max-width:640px;line-height:1.6;
+}
+.note strong{color:var(--ink-2)}
+
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}
+.tag{font-family:var(--mono);font-size:11px;padding:5px 10px;border-radius:7px;
+  background:rgba(255,255,255,.028);border:1px solid var(--line);color:var(--ink-2);
+  transition:border-color .25s ease,color .25s ease}
+.tag:hover{border-color:var(--accent-dim);color:var(--ink)}
+
+.proj-links{display:flex;gap:22px;flex-wrap:wrap;margin-top:26px;
+  padding-top:20px;border-top:1px solid var(--line);font-size:14.5px}
+.proj-links a{display:inline-flex;align-items:center;gap:7px;transition:gap .25s ease}
+.proj-links a:hover{gap:12px}
+
+/* ============================================================
+   WAREHOUSE GRID ANIMATION
+   ============================================================ */
+.demo{display:flex;gap:28px;align-items:center;flex-wrap:wrap;
+  margin:8px 0 4px;padding:22px;border:1px solid var(--line);border-radius:14px;
+  background:rgba(6,8,12,.5)}
+.wh-grid{display:grid;grid-template-columns:repeat(6,30px);grid-template-rows:repeat(6,30px);
+  gap:4px;flex-shrink:0}
+.cell{border-radius:5px;background:rgba(255,255,255,.035);border:1px solid transparent;
+  position:relative;transition:background .3s ease}
+.cell.obst{background:rgba(240,184,102,.14);border-color:rgba(240,184,102,.3)}
+.cell.pick{background:rgba(110,168,254,.16);border-color:rgba(110,168,254,.4)}
+.cell.drop{background:rgba(126,226,192,.16);border-color:rgba(126,226,192,.4)}
+.cell.trail{background:rgba(110,168,254,.3)}
+.cell.trail.carry{background:rgba(126,226,192,.28)}
+.robot{position:absolute;inset:5px;border-radius:50%;background:var(--accent);
+  box-shadow:0 0 14px rgba(110,168,254,.85);z-index:2}
+.robot.carry{background:var(--mint);box-shadow:0 0 14px rgba(126,226,192,.85)}
+.demo-side{flex:1;min-width:190px}
+.demo-side .k{font-family:var(--mono);font-size:11px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-3);margin-bottom:9px}
+.readout{font-family:var(--mono);font-size:13px;color:var(--ink-2);line-height:2}
+.readout b{color:var(--ink);font-weight:500;font-variant-numeric:tabular-nums}
+.legend{display:flex;gap:15px;flex-wrap:wrap;margin-top:14px;
+  font-family:var(--mono);font-size:10.5px;color:var(--ink-3)}
+.legend i{display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+
+/* ============================================================
+   SKILLS / TIMELINE
+   ============================================================ */
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:28px}
+.skillgroup{padding:22px;border:1px solid var(--line);border-radius:14px;
+  background:rgba(14,18,25,.5);transition:border-color .3s ease,transform .4s var(--ease)}
+.skillgroup:hover{border-color:var(--line-2);transform:translateY(-3px)}
+.skillgroup h5{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--accent);margin:0 0 12px;font-weight:500}
+.skillgroup p{margin:0;color:var(--ink-2);font-size:14.5px;line-height:1.85}
+
+.xp{display:flex;gap:26px;padding:24px 0;border-bottom:1px solid var(--line);position:relative}
+.xp:last-child{border-bottom:none}
+.xp-when{font-family:var(--mono);font-size:11.5px;color:var(--ink-3);min-width:112px;padding-top:5px;
+  letter-spacing:.04em}
+.xp-what h3{font-size:17.5px;margin:0 0 4px;font-weight:620}
+.xp-what .org{font-size:14px;color:var(--accent);margin:0 0 10px}
+.xp-what p{margin:0;color:var(--ink-2);font-size:14.5px}
+@media(max-width:620px){.xp{flex-direction:column;gap:7px}.xp-when{padding-top:0}}
+
+/* ============================================================
+   CONTACT / FOOTER
+   ============================================================ */
+#contact .wrap{text-align:center}
+#contact .sec-head{justify-content:center}
+#contact .rule{max-width:100px}
+.big-cta{font-size:clamp(26px,4.2vw,38px);letter-spacing:-.025em;font-weight:640;
+  margin:0 0 18px;line-height:1.22}
+#contact .lede{margin:0 auto 34px}
+#contact .links{justify-content:center}
+footer{padding:52px 0 72px;color:var(--ink-3);font-size:13px;border-top:1px solid var(--line)}
+footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+footer a{color:var(--ink-2)}
+
+/* ============================================================
+   REVEAL
+   ============================================================ */
+.reveal{opacity:0;transform:translateY(26px);
+  transition:opacity .85s var(--ease),transform .85s var(--ease)}
+.reveal.revealed{opacity:1;transform:none}
+.stagger>*{opacity:0;transform:translateY(20px);
+  transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.stagger.revealed>*{opacity:1;transform:none}
+.stagger.revealed>*:nth-child(1){transition-delay:.05s}
+.stagger.revealed>*:nth-child(2){transition-delay:.13s}
+.stagger.revealed>*:nth-child(3){transition-delay:.21s}
+.stagger.revealed>*:nth-child(4){transition-delay:.29s}
+.stagger.revealed>*:nth-child(5){transition-delay:.37s}
+.stagger.revealed>*:nth-child(6){transition-delay:.45s}
+
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms !important;animation-iteration-count:1 !important;
+    transition-duration:.001ms !important;scroll-behavior:auto !important}
+  .reveal,.stagger>*{opacity:1;transform:none}
+  .bar{width:var(--w)}
+}
+</style>
+</head>
+<body>
+
+<div class="backdrop">
+  <div class="grid-bg"></div>
+  <div class="orb a"></div><div class="orb b"></div><div class="orb c"></div>
+</div>
+<div class="noise"></div>
+<div class="progress" id="progress"></div>
+
+<nav id="nav">
+  <div class="wrap">
+    <div class="brand"><span class="dot"></span>ravi rajaram singh</div>
+    <div class="navlinks">
+      <a href="#work">Work</a>
+      <a href="#skills">Skills</a>
+      <a href="#background">Background</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<header>
+  <div class="wrap stagger" data-reveal>
+    <div class="eyebrow">Applied AI / ML Engineering</div>
+    <h1>Building models,<br>then finding out<br>where they break.</h1>
+    <p class="lede">
+      MS Computer Science (AI/ML) at the <strong>University at Buffalo</strong>. Previously two years
+      shipping production fintech software at <strong>Intellect Design Arena</strong>.
+    </p>
+    <p class="lede">
+      I work on <strong>offline reinforcement learning</strong> and <strong>sequence models</strong>.
+      Every result below is reproducible from the linked repository —
+      <em>including the ones that didn't go the way I expected.</em>
+    </p>
+    <div class="links">
+      <a class="btn primary" href="https://github.com/its-Ravi-Singh" target="_blank" rel="noopener">
+        <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        GitHub
+      </a>
+      <a class="btn" href="https://linkedin.com/in/ravi-singh-47551a206" target="_blank" rel="noopener">LinkedIn</a>
+      <a class="btn" href="mailto:raviraja@buffalo.edu">raviraja@buffalo.edu</a>
+    </div>
+    <div class="cue"><span></span>Scroll</div>
+  </div>
+</header>
+
+<section id="work">
+  <div class="wrap">
+    <div class="sec-head reveal" data-reveal><h2><b>01</b>Selected Work</h2><div class="rule"></div></div>
+
+    <!-- ========== PROJECT 1 ========== -->
+    <article class="proj reveal" data-reveal>
+      <div class="proj-top">
+        <div>
+          <h3>Offline RL: Decision Transformer with Preference Learning</h3>
+          <div class="meta">Graduate Deep Learning &amp; RL capstone · D4RL / Minari Hopper · PyTorch</div>
+        </div>
+        <span class="badge">Complete</span>
+      </div>
+
+      <p>
+        Offline reinforcement learning for MuJoCo continuous control, treating RL as a sequence-modelling
+        problem. I trained a <strong>Decision Transformer</strong> on fixed Hopper trajectories with no
+        online environment interaction, then built an <strong>RLHF-style preference pipeline</strong> on
+        top to test whether preference signals can steer offline policy training — and what happens when
+        those labels are noisy or wrong.
+      </p>
+
+      <h4>What I built</h4>
+      <ul class="tight">
+        <li>A causal Decision Transformer (726K params, 3 layers, 4 heads) over return-to-go, state and
+            action tokens, trained with a masked-MSE action objective.</li>
+        <li>A <strong>Perceiver-style comparison policy</strong> (1.9M params, learned latent tokens and
+            cross-attention) seeing only the current state and target return — no history buffer.</li>
+        <li>A <strong>Bradley–Terry preference model</strong> scoring trajectory segments, trained on
+            2,000 generated pairs to <strong>91% validation accuracy</strong>, then used to reweight
+            Decision Transformer training windows.</li>
+        <li>An error-analysis pass flagging <em>high-confidence wrong</em> preference predictions — the
+            failure mode that matters, since those push training hardest in the wrong direction.</li>
+        <li>A Gradio demo with live action prediction and recorded Hopper rollouts.</li>
+      </ul>
+
+      <h4>The two policies, running</h4>
+      <figure class="vid">
+        <video autoplay muted loop playsinline preload="metadata"
+               poster="assets/hopper-poster.jpg">
+          <source src="assets/hopper-comparison.webm" type="video/webm">
+          <source src="assets/hopper-comparison.mp4" type="video/mp4">
+        </video>
+        <figcaption>
+          Both checkpoints replayed from the repository in Gymnasium MuJoCo. The Decision Transformer
+          falls at step 20 for a return of 23; the Perception Transformer keeps hopping past 2,900.
+          Same task, same evaluation loop.
+        </figcaption>
+      </figure>
+
+      <h4>Three-way Hopper-v4 benchmark</h4>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>Split</th><th>Model</th><th style="text-align:right">Avg return</th><th class="barcell">Relative</th></tr></thead>
+          <tbody>
+            <tr><td>Simple</td><td>Decision Transformer</td><td class="num">60.4</td><td><i class="bar" style="--w:10%"></i></td></tr>
+            <tr><td>Simple</td><td>DT + Preference</td><td class="num">76.2</td><td><i class="bar" style="--w:13%"></i></td></tr>
+            <tr><td>Simple</td><td>Perception Transformer</td><td class="num">593.5</td><td><i class="bar win" style="--w:100%"></i></td></tr>
+            <tr><td>Medium</td><td>Decision Transformer</td><td class="num">24.0</td><td><i class="bar" style="--w:4%"></i></td></tr>
+            <tr><td>Medium</td><td>DT + Preference</td><td class="num">67.4</td><td><i class="bar" style="--w:11%"></i></td></tr>
+            <tr><td>Medium</td><td>Perception Transformer</td><td class="num">555.3</td><td><i class="bar win" style="--w:94%"></i></td></tr>
+            <tr><td>Expert</td><td>Decision Transformer</td><td class="num">68.6</td><td><i class="bar" style="--w:12%"></i></td></tr>
+            <tr class="win"><td>Expert</td><td>DT + Preference</td><td class="num">88.3</td><td><i class="bar win" style="--w:15%"></i></td></tr>
+            <tr><td>Expert</td><td>Perception Transformer</td><td class="num">80.6</td><td><i class="bar" style="--w:14%"></i></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p style="margin-top:20px">
+        Preference weighting improved the Decision Transformer on <strong>all three splits</strong> —
+        largest on medium (24.0 → 67.4), and on expert it produced the best policy overall. But the much
+        simpler one-step Perception Transformer dominated on simple and medium. That's the genuinely
+        interesting result: under a bounded training budget, the architecture that needs no history was
+        far easier to train than the one that reasons over it.
+      </p>
+
+      <p class="note">
+        <strong>Scope, stated plainly:</strong> 10 epochs, a bounded 10,000-sample budget per split, 5
+        evaluation episodes, single seed, no hyperparameter tuning. Directional results, not a tuned
+        benchmark — the repo's report says so and lists seed averaging as the first fix.
+      </p>
+
+      <div class="tags">
+        <span class="tag">PyTorch</span><span class="tag">Decision Transformer</span>
+        <span class="tag">Offline RL</span><span class="tag">RLHF / preference learning</span>
+        <span class="tag">Bradley–Terry</span><span class="tag">Perceiver</span>
+        <span class="tag">D4RL / Minari</span><span class="tag">Gymnasium MuJoCo</span><span class="tag">Gradio</span>
+      </div>
+
+      <div class="proj-links">
+        <a href="https://github.com/its-Ravi-Singh/offline-rl-decision-transformer" target="_blank" rel="noopener">Code <span>→</span></a>
+        <a href="https://github.com/its-Ravi-Singh/offline-rl-decision-transformer/blob/main/REPORT.md" target="_blank" rel="noopener">Technical report <span>→</span></a>
+      </div>
+    </article>
+
+    <!-- ========== PROJECT 2 ========== -->
+    <article class="proj reveal" data-reveal id="warehouse">
+      <div class="proj-top">
+        <div>
+          <h3>Warehouse Robot Navigation — Q-Learning vs SARSA</h3>
+          <div class="meta">Custom RL environment · tabular TD control · NumPy, no RL libraries</div>
+        </div>
+        <span class="badge">Complete</span>
+      </div>
+
+      <p>
+        I wrote the environment rather than using a pre-built one — a 6×6 warehouse where a robot collects
+        an item and delivers it past shelves, with optional stochastic transitions. Then I implemented
+        <strong>Q-Learning and SARSA from scratch</strong> to compare on-policy against off-policy control
+        on a problem small enough (72 states) to reason about exactly.
+      </p>
+
+      <div class="demo">
+        <div class="wh-grid" id="whGrid" aria-hidden="true"></div>
+        <div class="demo-side">
+          <div class="k">Learned optimal policy</div>
+          <div class="readout">
+            step <b id="whStep">0</b> / 18<br>
+            reward <b id="whReward">0</b> / +107<br>
+            status <b id="whStatus">searching</b>
+          </div>
+          <div class="legend">
+            <span><i style="background:rgba(110,168,254,.6)"></i>pickup</span>
+            <span><i style="background:rgba(126,226,192,.6)"></i>drop-off</span>
+            <span><i style="background:rgba(240,184,102,.5)"></i>shelf</span>
+          </div>
+        </div>
+      </div>
+      <p class="note" style="margin-top:14px">
+        This is the trained agent's actual greedy trajectory, replayed step for step from the saved
+        Q-table: five moves left to the pickup, then down and around the shelves to the drop.
+        18 steps, +107 reward — the optimum for this layout.
+      </p>
+
+      <h4>500 episodes, averaged over 5 seeds</h4>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>Environment</th><th>Algorithm</th><th style="text-align:right">Reward</th><th style="text-align:right">Episodes to 90%</th><th class="barcell">Shorter = faster</th></tr></thead>
+          <tbody>
+            <tr class="win"><td>Deterministic</td><td>Q-Learning</td><td class="num">107.0</td><td class="num">73</td><td><i class="bar win" style="--w:54%"></i></td></tr>
+            <tr><td>Deterministic</td><td>SARSA</td><td class="num">107.0</td><td class="num">114</td><td><i class="bar" style="--w:84%"></i></td></tr>
+            <tr class="win"><td>Stochastic</td><td>Q-Learning</td><td class="num">105.2</td><td class="num">79</td><td><i class="bar win" style="--w:58%"></i></td></tr>
+            <tr><td>Stochastic</td><td>SARSA</td><td class="num">105.2</td><td class="num">135</td><td><i class="bar" style="--w:100%"></i></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p style="margin-top:20px">
+        Both algorithms converged to the identical optimal policy; Q-Learning got there roughly
+        <strong>1.6× faster</strong>. But the textbook result — that SARSA learns a <em>safer</em> path —
+        did not appear at all, and I expected it to.
+      </p>
+      <p>
+        My explanation: the environment had no cliff. Hitting a shelf costs reward but the episode
+        continues, so there is nothing catastrophic for an on-policy learner to be careful about. To test
+        that, I added a mode where collisions are terminal and reran everything.
+        <strong>SARSA then collided 37% less often during training</strong> (0.069 vs 0.109 per episode)
+        while both still converged to the same collision-free policy — the caution shows up exactly where
+        the theory says it should.
+      </p>
+
+      <p class="note">
+        <strong>A bug worth recording:</strong> my <code>reset()</code> reseeded the RNG every episode, so
+        every episode drew identical random numbers. Nothing crashed and the curves looked fine — the
+        results were just meaningless. Fixed, and documented in the repo rather than quietly patched.
+      </p>
+
+      <div class="tags">
+        <span class="tag">NumPy</span><span class="tag">Gymnasium</span><span class="tag">Q-Learning</span>
+        <span class="tag">SARSA</span><span class="tag">Temporal-difference control</span>
+        <span class="tag">Reward shaping</span><span class="tag">Multi-seed evaluation</span>
+      </div>
+
+      <div class="proj-links">
+        <a href="https://github.com/its-Ravi-Singh/rl-warehouse-navigation" target="_blank" rel="noopener">Code <span>→</span></a>
+      </div>
+    </article>
+
+    <!-- ========== PROJECT 3 ========== -->
+    <article class="proj reveal" data-reveal>
+      <div class="proj-top">
+        <div>
+          <h3>Retinal OCT Classification — Interpretability &amp; Deployment</h3>
+          <div class="meta">OCTMNIST · PyTorch CNNs · coursework, University at Buffalo</div>
+        </div>
+        <span class="badge">Complete</span>
+      </div>
+
+      <p>
+        Four-way classification of retinal OCT scans — choroidal neovascularization, diabetic macular
+        edema, drusen, normal. A baseline CNN, then an improved one. The useful part was
+        <strong>reading past the headline accuracy</strong>.
+      </p>
+
+      <h4>What I built</h4>
+      <ul class="tight">
+        <li>A baseline CNN (896K params) and an improved version (1.7M) adding BatchNorm, class-weighted
+            loss, weight decay, LR scheduling and early stopping. Test accuracy
+            <strong>71.2% → 76.5%</strong>.</li>
+        <li><strong>Interpretability via PyTorch forward hooks</strong> — capturing activations at early,
+            middle and late convolutions, plus the learned first-layer kernels.</li>
+        <li>A generated, self-contained deployment folder running a Gradio inference app.</li>
+      </ul>
+
+      <h4>Per-class recall — improved model</h4>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>Class</th><th style="text-align:right">Precision</th><th style="text-align:right">Recall</th><th class="barcell">Recall</th></tr></thead>
+          <tbody>
+            <tr><td>Choroidal neovascularization</td><td class="num">0.66</td><td class="num">0.95</td><td><i class="bar win" style="--w:95%"></i></td></tr>
+            <tr><td>Diabetic macular edema</td><td class="num">0.89</td><td class="num">0.89</td><td><i class="bar win" style="--w:89%"></i></td></tr>
+            <tr class="win"><td>Drusen</td><td class="num">0.97</td><td class="num">0.29</td><td><i class="bar" style="--w:29%"></i></td></tr>
+            <tr><td>Normal</td><td class="num">0.74</td><td class="num">0.93</td><td><i class="bar win" style="--w:93%"></i></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p style="margin-top:20px">
+        <strong>Drusen recall is 0.29.</strong> The model misses seven in ten cases of that condition
+        while reporting 76.5% overall. Its precision on drusen is 0.97 — it is almost always right when
+        it makes the call, it just almost never makes it. In a clinical setting, sending 69 drusen
+        patients away as normal is the failure that matters, not the aggregate number.
+      </p>
+
+      <p class="note">
+        <strong>The validation score was misleading.</strong> The improved model scored <em>lower</em> on
+        validation (0.9049 vs 0.9139) yet higher on test. Validation follows the imbalanced training
+        distribution; the test set is balanced at 250 per class. Selecting on validation accuracy would
+        have made me keep the worse model — which is also most of why the baseline drops from 91% to 71%.
+      </p>
+
+      <div class="tags">
+        <span class="tag">PyTorch</span><span class="tag">CNNs</span><span class="tag">OCTMNIST</span>
+        <span class="tag">Class imbalance</span><span class="tag">Forward hooks</span>
+        <span class="tag">Model interpretability</span><span class="tag">Gradio</span>
+      </div>
+
+      <div class="proj-links">
+        <a href="https://github.com/its-Ravi-Singh/octmnist-cnn-interpretability" target="_blank" rel="noopener">Code <span>→</span></a>
+      </div>
+    </article>
+
+    <article class="proj reveal" data-reveal id="dqn">
+      <div class="proj-top">
+        <div>
+          <h3>Deep Q-Networks — DQN vs Double DQN</h3>
+          <div class="meta">Three control environments · PyTorch · matched hyperparameters</div>
+        </div>
+        <span class="badge">Complete</span>
+      </div>
+
+      <p>
+        Both algorithms written from scratch — replay buffer, target network, epsilon-greedy schedule
+        — and run head to head under identical settings. Double DQN exists to fix one thing: standard
+        DQN uses the same network to pick the best next action and to score it, and a max over noisy
+        estimates is biased upward. <strong>The question I actually wanted answered was when that fix
+        matters.</strong>
+      </p>
+
+      <h4>Greedy policy, true reward, mean over 10 episodes</h4>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>Environment</th><th style="text-align:right">DQN</th><th style="text-align:right">Double DQN</th><th>Outcome</th></tr></thead>
+          <tbody>
+            <tr><td>GridWorld</td><td class="num">6.00</td><td class="num">4.40</td><td>plain DQN wins</td></tr>
+            <tr><td>CartPole</td><td class="num">500.0</td><td class="num">500.0</td><td>both solved</td></tr>
+            <tr class="win"><td>MountainCar</td><td class="num">−112.7</td><td class="num">−101.0</td><td>only Double DQN solved</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="note" style="margin-top:20px">
+        <strong>Double DQN is not uniformly better.</strong> It solved MountainCar where plain DQN
+        couldn't — sparse reward, long horizon, exactly where overestimation compounds. Both saturated
+        CartPole. But on a small tabular GridWorld with dense reward it scored <em>lower</em>, because a
+        deliberately conservative target just slows early value propagation when there was no bias
+        problem to fix. The correction pays off in proportion to how much overestimation was actually
+        hurting.
+      </p>
+
+      <p>
+        The repo logs the mean target-network value estimate on every training step, so the
+        overestimation gap between the two agents can be measured rather than asserted.
+      </p>
+
+      <div class="tags">
+        <span class="tag">PyTorch</span><span class="tag">DQN</span><span class="tag">Double DQN</span>
+        <span class="tag">Experience replay</span><span class="tag">Target networks</span>
+        <span class="tag">Gymnasium</span><span class="tag">Reward shaping</span>
+      </div>
+
+      <div class="proj-links">
+        <a href="https://github.com/its-Ravi-Singh/dqn-vs-double-dqn" target="_blank" rel="noopener">Code <span>→</span></a>
+      </div>
+    </article>
+
+    <article class="proj reveal" data-reveal id="nn-scratch">
+      <div class="proj-top">
+        <div>
+          <h3>Neural Network from Scratch — NumPy to PyTorch</h3>
+          <div class="meta">Backpropagation by hand · self-directed · Dec 2025 – Jan 2026</div>
+        </div>
+        <span class="badge">Complete</span>
+      </div>
+
+      <p>
+        Build the same network twice. First in pure NumPy — forward pass, chain-rule backpropagation,
+        BCE and MSE losses, SGD, all derived by hand with no autograd. Then rebuild the identical
+        architecture with <code>torch.nn.Module</code>.
+      </p>
+
+      <h4>The part that matters</h4>
+      <ul class="tight">
+        <li>Both implementations receive identical inputs and identical initial weights, and their
+            gradients are compared elementwise. <strong>They match.</strong></li>
+        <li>That check is what separates "I implemented backpropagation" from "I implemented it
+            <em>correctly</em>" — it catches the failure where a sign error or a missing transpose
+            still produces a loss curve that goes down, just to the wrong place.</li>
+        <li>Trained on MNIST digits, with the NumPy version writing its own parameter initialisation and
+            forward and backward passes end to end.</li>
+      </ul>
+
+      <p class="note">
+        Anyone can call <code>.backward()</code>. Debugging a run that isn't converging is guesswork if
+        that call is a black box — knowing the gradient into a sigmoid saturates when its input is
+        large, because I derived that term myself, is the difference between "try a lower learning rate"
+        and knowing where to look.
+      </p>
+
+      <div class="tags">
+        <span class="tag">NumPy</span><span class="tag">PyTorch</span><span class="tag">Backpropagation</span>
+        <span class="tag">Gradient checking</span><span class="tag">SGD</span>
+      </div>
+
+      <div class="proj-links">
+        <a href="https://github.com/its-Ravi-Singh/neural-networks-from-scratch" target="_blank" rel="noopener">Code <span>→</span></a>
+      </div>
+    </article>
+  </div>
+</section>
+
+
+
+<section id="skills">
+  <div class="wrap">
+    <div class="sec-head reveal" data-reveal><h2><b>02</b>Technical</h2><div class="rule"></div></div>
+    <div class="grid2 stagger" data-reveal>
+      <div class="skillgroup">
+        <h5>Machine Learning</h5>
+        <p>PyTorch · TensorFlow · scikit-learn · Transformers &amp; attention · Offline RL · Preference
+           learning (RLHF-style) · CNNs · PEFT / LoRA · Model interpretability</p>
+      </div>
+      <div class="skillgroup">
+        <h5>Languages</h5>
+        <p>Python · TypeScript / JavaScript</p>
+      </div>
+      <div class="skillgroup">
+        <h5>Engineering</h5>
+        <p>Angular · GraphQL · REST APIs · Git · Gradio · Automation tooling · Production release cycles</p>
+      </div>
+      <div class="skillgroup">
+        <h5>Practice</h5>
+        <p>Data structures &amp; algorithms — an ongoing, publicly tracked problem-solving log rather than
+           a one-time push.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="background">
+  <div class="wrap">
+    <div class="sec-head reveal" data-reveal><h2><b>03</b>Background</h2><div class="rule"></div></div>
+    <div class="stagger" data-reveal>
+      <div class="xp">
+        <div class="xp-when">Present</div>
+        <div class="xp-what">
+          <h3>MS, Computer Science (AI/ML)</h3>
+          <p class="org">University at Buffalo · expected December 2026</p>
+          <p>Coursework in deep learning and reinforcement learning, with project work in offline RL,
+             sequence models and medical image classification.</p>
+        </div>
+      </div>
+      <div class="xp">
+        <div class="xp-when">2022 — 2024</div>
+        <div class="xp-what">
+          <h3>Software Developer</h3>
+          <p class="org">Intellect Design Arena · Mumbai</p>
+          <p>Two years building and shipping fintech software — Angular front ends, GraphQL services and
+             Python automation. Real users, real release cycles, real consequences for breaking things.</p>
+        </div>
+      </div>
+      <div class="xp">
+        <div class="xp-when">2018 — 2022</div>
+        <div class="xp-what">
+          <h3>BE, Computer Engineering</h3>
+          <p class="org">Mumbai</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="wrap reveal" data-reveal>
+    <div class="sec-head"><h2><b>04</b>Contact</h2><div class="rule"></div></div>
+    <p class="big-cta">Open to applied AI/ML roles.</p>
+    <p class="lede">Internships and full-time. Email reaches me fastest.</p>
+    <div class="links">
+      <a class="btn primary" href="mailto:raviraja@buffalo.edu">raviraja@buffalo.edu</a>
+      <a class="btn" href="https://github.com/its-Ravi-Singh" target="_blank" rel="noopener">github.com/its-Ravi-Singh</a>
+      <a class="btn" href="https://linkedin.com/in/ravi-singh-47551a206" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div>Ravi Rajaram Singh · Buffalo, NY</div>
+    <div><a href="#">Back to top ↑</a></div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------- scroll progress + sticky nav ---------- */
+  var progress = document.getElementById('progress');
+  var nav = document.getElementById('nav');
+  function onScroll(){
+    var h = document.documentElement;
+    var pct = h.scrollTop / (h.scrollHeight - h.clientHeight) * 100;
+    progress.style.width = pct + '%';
+    nav.classList.toggle('stuck', h.scrollTop > 12);
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  /* ---------- reveal on scroll ---------- */
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){ e.target.classList.add('revealed'); io.unobserve(e.target); }
+    });
+  }, {threshold:0.12, rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('[data-reveal]').forEach(function(el){ io.observe(el); });
+
+  /* ---------- active nav link ---------- */
+  var links = [].slice.call(document.querySelectorAll('.navlinks a'));
+  var sections = links.map(function(a){ return document.querySelector(a.getAttribute('href')); });
+  var spy = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(!e.isIntersecting) return;
+      links.forEach(function(a,i){ a.classList.toggle('active', sections[i] === e.target); });
+    });
+  }, {threshold:0.2, rootMargin:'-20% 0px -60% 0px'});
+  sections.forEach(function(s){ if(s) spy.observe(s); });
+
+  /* ---------- warehouse policy animation ---------- */
+  var GRID = 6;
+  var OBST = [[2,2],[2,3],[3,2],[3,5],[4,4]];
+  var PICK = [0,0], DROP = [4,5];
+  // The route the trained agent actually takes: 5 left to pickup, PICK-UP,
+  // 5 down, 5 right along the bottom row, 1 up, DROP. 18 steps, +107.
+  var PATH = [
+    [0,5],[0,4],[0,3],[0,2],[0,1],[0,0],'PICK',
+    [1,0],[1,1],[2,1],[3,1],[4,1],[4,2],
+    [5,2],[5,3],[5,4],[5,5],[4,5],'DROP'
+  ];
+
+  var grid = document.getElementById('whGrid');
+  var cells = [];
+  for(var r=0;r<GRID;r++){
+    for(var c=0;c<GRID;c++){
+      var d = document.createElement('div');
+      d.className = 'cell';
+      if(OBST.some(function(o){return o[0]===r&&o[1]===c;})) d.className += ' obst';
+      if(r===PICK[0]&&c===PICK[1]) d.className += ' pick';
+      if(r===DROP[0]&&c===DROP[1]) d.className += ' drop';
+      grid.appendChild(d);
+      cells.push(d);
+    }
+  }
+  var robot = document.createElement('div');
+  robot.className = 'robot';
+
+  var elStep = document.getElementById('whStep');
+  var elReward = document.getElementById('whReward');
+  var elStatus = document.getElementById('whStatus');
+
+  function idx(r,c){ return r*GRID + c; }
+
+  var timer = null;
+  function play(){
+    var i = 0, steps = 0, reward = 0, carrying = false;
+    cells.forEach(function(c){ c.classList.remove('trail','carry'); });
+    if(robot.parentNode) robot.parentNode.removeChild(robot);
+    robot.className = 'robot';
+
+    function tick(){
+      if(i >= PATH.length){
+        elStatus.textContent = 'delivered';
+        timer = setTimeout(play, 2600);
+        return;
+      }
+      var node = PATH[i];
+
+      // every action costs -1, including PICK-UP and DROP
+      if(node === 'PICK'){
+        carrying = true; reward += 25 - 1; steps += 1;
+        robot.className = 'robot carry';
+        elStatus.textContent = 'carrying';
+      } else if(node === 'DROP'){
+        reward += 100 - 1; steps += 1;
+        elStatus.textContent = 'delivered';
+      } else {
+        var cell = cells[idx(node[0], node[1])];
+        cell.appendChild(robot);
+        cell.classList.add('trail');
+        if(carrying) cell.classList.add('carry');
+        if(i > 0){ reward -= 1; steps += 1; }
+        if(!carrying) elStatus.textContent = 'to pickup';
+      }
+
+      elStep.textContent = steps;
+      elReward.textContent = reward;
+      i++;
+      timer = setTimeout(tick, node === 'PICK' || node === 'DROP' ? 460 : 210);
+    }
+    tick();
+  }
+
+  if(reduced){
+    // static end-state: show the full route without motion
+    PATH.forEach(function(n){
+      if(Array.isArray(n)) cells[idx(n[0],n[1])].classList.add('trail');
+    });
+    cells[idx(DROP[0],DROP[1])].appendChild(robot);
+    robot.className = 'robot carry';
+    elStep.textContent = '18'; elReward.textContent = '107'; elStatus.textContent = 'delivered';
+  } else {
+    var whIO = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){ if(!timer) play(); }
+        else { clearTimeout(timer); timer = null; }
+      });
+    }, {threshold:0.25});
+    whIO.observe(grid);
+  }
+})();
+</script>
+</body>
+</html>
