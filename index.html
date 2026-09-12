@@ -694,6 +694,8 @@ footer a{color:var(--ink-2)}
             still produces a loss curve that goes down, just to the wrong place.</li>
         <li>Trained on MNIST digits, with the NumPy version writing its own parameter initialisation and
             forward and backward passes end to end.</li>
+         <li>The same repo now also includes a scalar autograd engine built from scratch — 
+            the mechanism this project's <code>.backward()</code> calls are built on top of.</li>
       </ul>
 
       <p class="note">
