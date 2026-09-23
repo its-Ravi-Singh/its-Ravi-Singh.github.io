@@ -3,8 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Ravi Rajaram Singh — Applied AI/ML Engineer</title>
-<meta name="description" content="MS CS (AI/ML) at University at Buffalo. Offline reinforcement learning, sequence models, and applied deep learning.">
+<title>Ravi Rajaram Singh — AI/ML Engineer</title>
+<meta name="description" content="MS CS (AI/ML) at University at Buffalo, graduating Dec 2026. LLM systems, RAG, applied deep learning, and two years of production fintech engineering.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://its-ravi-singh.github.io/">
+<meta property="og:title" content="Ravi Rajaram Singh — AI/ML Engineer">
+<meta property="og:description" content="MS CS (AI/ML) at University at Buffalo, graduating Dec 2026. LLM systems, RAG, applied deep learning, and two years of production fintech engineering.">
+<meta name="twitter:card" content="summary">
 <style>
 /* ============================================================
    TOKENS
@@ -36,6 +41,7 @@ body{
   -webkit-font-smoothing:antialiased;overflow-x:hidden;
 }
 a{color:var(--accent);text-decoration:none}
+a:focus-visible,.btn:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:6px}
 .wrap{max-width:var(--maxw);margin:0 auto;padding:0 26px}
 ::selection{background:rgba(110,168,254,.28)}
 
@@ -208,10 +214,12 @@ td.num{text-align:right;font-family:var(--mono);color:var(--ink);font-variant-nu
 tbody tr{transition:background .25s ease}
 tbody tr:hover{background:rgba(110,168,254,.045)}
 tr.win td{color:var(--mint)}
+tr.flag td{color:var(--amber)}
 .barcell{width:130px}
 .bar{display:block;height:7px;border-radius:4px;background:var(--accent-dim);
   width:0;transition:width 1.1s var(--ease)}
 .bar.win{background:linear-gradient(90deg,var(--mint),#5bc9a5)}
+.bar.flag{background:var(--amber)}
 .revealed .bar{width:var(--w)}
 
 .note{
@@ -238,6 +246,10 @@ figure.vid figcaption{
   padding-top:20px;border-top:1px solid var(--line);font-size:14.5px}
 .proj-links a{display:inline-flex;align-items:center;gap:7px;transition:gap .25s ease}
 .proj-links a:hover{gap:12px}
+
+/* schema diagram: scroll sideways on phones instead of squishing */
+.schema-container{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 0 6px}
+.schema-container svg{min-width:760px}
 
 /* ============================================================
    WAREHOUSE GRID ANIMATION
@@ -283,7 +295,8 @@ figure.vid figcaption{
   letter-spacing:.04em}
 .xp-what h3{font-size:17.5px;margin:0 0 4px;font-weight:620}
 .xp-what .org{font-size:14px;color:var(--accent);margin:0 0 10px}
-.xp-what p{margin:0;color:var(--ink-2);font-size:14.5px}
+.xp-what p{margin:0 0 10px;color:var(--ink-2);font-size:14.5px}
+.xp-what p:last-child{margin-bottom:0}
 @media(max-width:620px){.xp{flex-direction:column;gap:7px}.xp-when{padding-top:0}}
 
 /* ============================================================
@@ -315,6 +328,7 @@ footer a{color:var(--ink-2)}
 .stagger.revealed>*:nth-child(4){transition-delay:.29s}
 .stagger.revealed>*:nth-child(5){transition-delay:.37s}
 .stagger.revealed>*:nth-child(6){transition-delay:.45s}
+.stagger.revealed>*:nth-child(7){transition-delay:.53s}
 
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.001ms !important;animation-iteration-count:1 !important;
@@ -347,21 +361,23 @@ footer a{color:var(--ink-2)}
 
 <header>
   <div class="wrap stagger" data-reveal>
-    <div class="eyebrow">AI Engineer · Python · Machine Learning</div>
+    <div class="eyebrow">AI/ML Engineer · LLM Systems · RAG · Production Deployment</div>
     <h1>Building AI systems<br>that ship to production.</h1>
     <p class="lede">
-      MS Computer Science (AI/ML) at the <strong>University at Buffalo</strong>. Two years shipping 
-      production fintech software at <strong>Intellect Design Arena</strong> — TypeScript full-stack, 
-      PostgreSQL schema design, real users, real constraints.
+      MS Computer Science (AI/ML) at the <strong>University at Buffalo</strong>, graduating December 2026.
+      Two years shipping production fintech software at <strong>Intellect Design Arena</strong> for banks
+      including ANZ and BNY — TypeScript full-stack, GraphQL, PostgreSQL, real users, real constraints.
     </p>
-   <p class="lede">
-     I build AI systems from first principles. Hands-on experience with machine learning fundamentals, data preprocessing, model development, and production integration. <strong>Every project below is shipped and reproducible from GitHub.</strong>
-   </p>
-   
-   <p style="font-size: 15px; color: var(--ink-2); margin: 20px 0 0; line-height: 1.7;">
-     <strong>What I'm solving:</strong> How to build models that actually work · understanding what the data is telling you · deploying systems that are reliable and transparent.
-   </p>
-    
+    <p class="lede">
+      I build AI systems from first principles — from hand-derived backpropagation to LLM retrieval
+      pipelines — and I care most about evaluation that tells you whether a result is real.
+      <strong>Every completed project below is reproducible from GitHub.</strong>
+    </p>
+
+    <p style="font-size: 15px; color: var(--ink-2); margin: 20px 0 0; line-height: 1.7;">
+      <strong>What I'm solving:</strong> How to build models that actually work · understanding what the data is telling you · deploying systems that are reliable and transparent.
+    </p>
+
     <div class="links">
       <a class="btn primary" href="https://github.com/its-Ravi-Singh" target="_blank" rel="noopener">
         <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
@@ -378,7 +394,7 @@ footer a{color:var(--ink-2)}
   <div class="wrap">
     <div class="sec-head reveal" data-reveal><h2><b>01</b>Selected Work</h2><div class="rule"></div></div>
 
-    <!-- ========== PROJECT 1 ========== -->
+    <!-- ========== PROJECT 1: OFFLINE RL ========== -->
     <article class="proj reveal" data-reveal>
       <div class="proj-top">
         <div>
@@ -396,12 +412,13 @@ footer a{color:var(--ink-2)}
         those labels are noisy or wrong.
       </p>
 
-      <h4>What I built</h4>
+      <h4>What I designed and built</h4>
       <ul class="tight">
         <li>A causal Decision Transformer (726K params, 3 layers, 4 heads) over return-to-go, state and
             action tokens, trained with a masked-MSE action objective.</li>
-        <li>A <strong>Perceiver-style comparison policy</strong> (1.9M params, learned latent tokens and
-            cross-attention) seeing only the current state and target return — no history buffer.</li>
+        <li>A <strong>Perceiver-style comparison policy</strong> — the "Perception Transformer" in the
+            results below (1.9M params, learned latent tokens and cross-attention) — seeing only the
+            current state and target return, with no history buffer.</li>
         <li>A <strong>Bradley–Terry preference model</strong> scoring trajectory segments, trained on
             2,000 generated pairs to <strong>91% validation accuracy</strong>, then used to reweight
             Decision Transformer training windows.</li>
@@ -469,7 +486,433 @@ footer a{color:var(--ink-2)}
       </div>
     </article>
 
-    <!-- ========== PROJECT 2 ========== -->
+    <!-- ========== PROJECT 2: OCT ========== -->
+    <article class="proj reveal" data-reveal>
+      <div class="proj-top">
+        <div>
+          <h3>Retinal OCT Classification — Interpretability &amp; Deployment</h3>
+          <div class="meta">OCTMNIST · PyTorch CNNs · coursework, University at Buffalo</div>
+        </div>
+        <span class="badge">Complete</span>
+      </div>
+
+      <p>
+        Four-way classification of retinal OCT scans — choroidal neovascularization, diabetic macular
+        edema, drusen, normal. A baseline CNN, then an improved one. The useful part was
+        <strong>reading past the headline accuracy</strong>.
+      </p>
+
+      <h4>What I built</h4>
+      <ul class="tight">
+        <li>A baseline CNN (896K params) and an improved version (1.7M) adding BatchNorm, class-weighted
+            loss, weight decay, LR scheduling and early stopping. Test accuracy
+            <strong>71.2% → 76.5%</strong>.</li>
+        <li><strong>Interpretability via PyTorch forward hooks</strong> — capturing activations at early,
+            middle and late convolutions, plus the learned first-layer kernels.</li>
+        <li>A generated, self-contained deployment folder running a Gradio inference app.</li>
+      </ul>
+
+      <h4>Per-class results — improved model</h4>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>Class</th><th style="text-align:right">Precision</th><th style="text-align:right">Recall</th><th class="barcell">Recall bar</th></tr></thead>
+          <tbody>
+            <tr><td>Choroidal neovascularization</td><td class="num">0.66</td><td class="num">0.95</td><td><i class="bar win" style="--w:95%"></i></td></tr>
+            <tr><td>Diabetic macular edema</td><td class="num">0.89</td><td class="num">0.89</td><td><i class="bar win" style="--w:89%"></i></td></tr>
+            <tr class="flag"><td>Drusen</td><td class="num">0.97</td><td class="num">0.29</td><td><i class="bar flag" style="--w:29%"></i></td></tr>
+            <tr><td>Normal</td><td class="num">0.74</td><td class="num">0.93</td><td><i class="bar win" style="--w:93%"></i></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p style="margin-top:20px">
+        <strong>Drusen recall is 0.29.</strong> The model misses seven in ten cases of that condition
+        while reporting 76.5% overall. Its precision on drusen is 0.97 — it is almost always right when
+        it makes the call, it just almost never makes it. In a clinical setting, drusen patients sent
+        home as "normal" are the failure that matters, not the aggregate number.
+      </p>
+
+      <p class="note">
+        <strong>The validation score was misleading.</strong> The improved model scored <em>lower</em> on
+        validation (0.9049 vs 0.9139) yet higher on test. Validation follows the imbalanced training
+        distribution; the test set is balanced at 250 per class. Selecting on validation accuracy would
+        have made me keep the worse model — which is also most of why the baseline drops from 91% to 71%.
+      </p>
+
+      <div class="tags">
+        <span class="tag">PyTorch</span><span class="tag">CNNs</span><span class="tag">OCTMNIST</span>
+        <span class="tag">Class imbalance</span><span class="tag">Forward hooks</span>
+        <span class="tag">Model interpretability</span><span class="tag">Gradio</span>
+      </div>
+
+      <div class="proj-links">
+        <a href="https://github.com/its-Ravi-Singh/octmnist-cnn-interpretability" target="_blank" rel="noopener">Code <span>→</span></a>
+      </div>
+    </article>
+
+    <!-- ========== PROJECT 3: DQN ========== -->
+    <article class="proj reveal" data-reveal id="dqn">
+      <div class="proj-top">
+        <div>
+          <h3>Deep Q-Networks — DQN vs Double DQN</h3>
+          <div class="meta">Three control environments · PyTorch · matched hyperparameters</div>
+        </div>
+        <span class="badge">Complete</span>
+      </div>
+
+      <p>
+        Both algorithms written from scratch — replay buffer, target network, epsilon-greedy schedule
+        — and run head to head under identical settings. Double DQN exists to fix one thing: standard
+        DQN uses the same network to pick the best next action and to score it, and a max over noisy
+        estimates is biased upward. <strong>The question I actually wanted answered was when that fix
+        matters.</strong>
+      </p>
+
+      <h4>Greedy policy, true reward, mean over 10 episodes</h4>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>Environment</th><th style="text-align:right">DQN</th><th style="text-align:right">Double DQN</th><th>Outcome</th></tr></thead>
+          <tbody>
+            <tr><td>GridWorld</td><td class="num">6.00</td><td class="num">4.40</td><td>plain DQN wins</td></tr>
+            <tr><td>CartPole</td><td class="num">500.0</td><td class="num">500.0</td><td>both solved</td></tr>
+            <tr class="win"><td>MountainCar</td><td class="num">−112.7</td><td class="num">−101.0</td><td>only Double DQN clears −110</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="note" style="margin-top:20px">
+        <strong>Double DQN is not uniformly better.</strong> It cleared MountainCar's −110 solve threshold
+        where plain DQN didn't — sparse reward, long horizon, exactly where overestimation compounds. Both
+        saturated CartPole. But on a small GridWorld with dense reward it scored <em>lower</em>, because a
+        deliberately conservative target just slows early value propagation when there was no bias
+        problem to fix. The correction pays off in proportion to how much overestimation was actually
+        hurting.
+      </p>
+
+      <p>
+        The repo logs the mean target-network value estimate on every training step, so the
+        overestimation gap between the two agents can be measured rather than asserted.
+      </p>
+
+      <div class="tags">
+        <span class="tag">PyTorch</span><span class="tag">DQN</span><span class="tag">Double DQN</span>
+        <span class="tag">Experience replay</span><span class="tag">Target networks</span>
+        <span class="tag">Gymnasium</span><span class="tag">Reward shaping</span>
+      </div>
+
+      <div class="proj-links">
+        <a href="https://github.com/its-Ravi-Singh/dqn-vs-double-dqn" target="_blank" rel="noopener">Code <span>→</span></a>
+      </div>
+    </article>
+
+    <!-- ========== PROJECT 4: NN FROM SCRATCH ========== -->
+    <article class="proj reveal" data-reveal id="nn-scratch">
+      <div class="proj-top">
+        <div>
+          <h3>Neural Network from Scratch — NumPy to PyTorch</h3>
+          <div class="meta">Backpropagation by hand · self-directed · Dec 2025 – Jan 2026</div>
+        </div>
+        <span class="badge">Complete</span>
+      </div>
+
+      <p>
+        Build the same network twice. First in pure NumPy — forward pass, chain-rule backpropagation,
+        BCE and MSE losses, SGD, all derived by hand with no autograd. Then rebuild the identical
+        architecture with <code>torch.nn.Module</code>.
+      </p>
+
+      <h4>The part that matters</h4>
+      <ul class="tight">
+        <li>Both implementations receive identical inputs and identical initial weights, and their
+            gradients are compared elementwise. <strong>They match.</strong></li>
+        <li>That check is what separates "I implemented backpropagation" from "I implemented it
+            <em>correctly</em>" — it catches the failure where a sign error or a missing transpose
+            still produces a loss curve that goes down, just to the wrong place.</li>
+        <li>Trained on MNIST digits, with the NumPy version writing its own parameter initialisation and
+            forward and backward passes end to end.</li>
+        <li>The same repo also includes a scalar autograd engine built from scratch —
+            the mechanism this project's <code>.backward()</code> calls are built on top of.</li>
+      </ul>
+
+      <p class="note">
+        Anyone can call <code>.backward()</code>. Debugging a run that isn't converging is guesswork if
+        that call is a black box — knowing the gradient into a sigmoid saturates when its input is
+        large, because I derived that term myself, is the difference between "try a lower learning rate"
+        and knowing where to look.
+      </p>
+
+      <div class="tags">
+        <span class="tag">NumPy</span><span class="tag">PyTorch</span><span class="tag">Backpropagation</span>
+        <span class="tag">Gradient checking</span><span class="tag">SGD</span>
+      </div>
+
+      <div class="proj-links">
+        <a href="https://github.com/its-Ravi-Singh/neural-networks-from-scratch" target="_blank" rel="noopener">Code <span>→</span></a>
+      </div>
+    </article>
+
+    <!-- ========== PROJECT 5: MODI DATABASE ========== -->
+    <article class="proj reveal" data-reveal>
+      <div class="proj-top">
+        <div>
+          <h3>MODI — Location Review Database Schema &amp; Queries</h3>
+          <div class="meta">PostgreSQL · Supabase · CSE 560 DMQL course, Spring 2026 · Team project</div>
+        </div>
+        <span class="badge">Complete</span>
+      </div>
+
+      <p>
+        A normalized PostgreSQL database for a location review system: users discover places, save favorites,
+        leave reviews, and report bad entries. Twelve-table schema across geography, venues, and user activity,
+        with trigger-based audit logging. Built and deployed on Supabase during the Spring 2026 Data Models
+        and Query Languages course.
+      </p>
+      <p>
+        <strong>My part:</strong> the geography hierarchy (state → city → postal zone → area) and the
+        indexing strategy. Teammates led the core schema design and data loading.
+      </p>
+
+      <h4>Database schema</h4>
+      <div class="schema-container">
+        <svg viewBox="0 0 1360 620" preserveAspectRatio="xMidYMid meet" style="width:100%;height:auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Entity-relationship diagram of the 12-table MODI schema">
+          <defs>
+            <linearGradient id="geoGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" style="stop-color:#6ea8fe;stop-opacity:0.25"/>
+              <stop offset="100%" style="stop-color:#6ea8fe;stop-opacity:0.08"/>
+            </linearGradient>
+            <linearGradient id="catGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" style="stop-color:#7ee2c0;stop-opacity:0.25"/>
+              <stop offset="100%" style="stop-color:#7ee2c0;stop-opacity:0.08"/>
+            </linearGradient>
+            <linearGradient id="placeGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" style="stop-color:#7ee2c0;stop-opacity:0.3"/>
+              <stop offset="100%" style="stop-color:#7ee2c0;stop-opacity:0.1"/>
+            </linearGradient>
+            <linearGradient id="userGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" style="stop-color:#f0b866;stop-opacity:0.2"/>
+              <stop offset="100%" style="stop-color:#f0b866;stop-opacity:0.06"/>
+            </linearGradient>
+            <linearGradient id="auditGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" style="stop-color:#c084fc;stop-opacity:0.2"/>
+              <stop offset="100%" style="stop-color:#c084fc;stop-opacity:0.06"/>
+            </linearGradient>
+            <filter id="shadow">
+              <feDropShadow dx="0" dy="3" stdDeviation="4" flood-opacity="0.4" flood-color="#000"/>
+            </filter>
+            <marker id="arrowHead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+              <polygon points="0 0, 10 3, 0 6" fill="#6ea8fe" opacity="0.7"/>
+            </marker>
+            <style>
+              .table-box { stroke-width: 2; filter: url(#shadow); }
+              .geo-table { fill: url(#geoGrad); stroke: #6ea8fe; }
+              .cat-table { fill: url(#catGrad); stroke: #7ee2c0; }
+              .place-table { fill: url(#placeGrad); stroke: #7ee2c0; }
+              .user-table { fill: url(#userGrad); stroke: #f0b866; }
+              .audit-table { fill: url(#auditGrad); stroke: #c084fc; stroke-dasharray: 4,3; }
+              .table-name { font-family: monospace; font-size: 13px; font-weight: 700; fill: #fff; letter-spacing: 0.5px; }
+              .pk-icon { fill: #7ee2c0; font-weight: bold; }
+              .attr-line { font-family: monospace; font-size: 10px; fill: #a4b0c4; }
+              .pk-attr { font-family: monospace; font-size: 10px; fill: #7ee2c0; font-weight: 600; }
+              .fk-attr { font-family: monospace; font-size: 10px; fill: #f0b866; font-weight: 600; }
+              .ts-attr { font-family: monospace; font-size: 9px; fill: #6ea8fe; font-style: italic; }
+              .divider { stroke: #2a3446; stroke-width: 1; opacity: 0.5; }
+              .relation { stroke: #6ea8fe; stroke-width: 1.5; fill: none; opacity: 0.55; }
+            </style>
+          </defs>
+
+          <!-- STATE -->
+          <g>
+            <rect class="table-box geo-table" x="30" y="40" width="100" height="100" rx="8"/>
+            <rect x="30" y="40" width="100" height="26" fill="#6ea8fe" opacity="0.12" rx="8"/>
+            <text class="table-name" x="42" y="59">STATE</text>
+            <line class="divider" x1="30" y1="70" x2="130" y2="70"/>
+            <text class="pk-attr" x="40" y="85">🔑 state_id</text>
+            <text class="attr-line" x="40" y="100">name</text>
+            <text class="attr-line" x="40" y="113">code</text>
+          </g>
+
+          <!-- CITY -->
+          <g>
+            <rect class="table-box geo-table" x="150" y="40" width="100" height="100" rx="8"/>
+            <rect x="150" y="40" width="100" height="26" fill="#6ea8fe" opacity="0.12" rx="8"/>
+            <text class="table-name" x="162" y="59">CITY</text>
+            <line class="divider" x1="150" y1="70" x2="250" y2="70"/>
+            <text class="pk-attr" x="160" y="85">🔑 city_id</text>
+            <text class="fk-attr" x="160" y="100">→ state_id</text>
+            <text class="attr-line" x="160" y="113">name</text>
+          </g>
+
+          <!-- POSTAL_ZONE -->
+          <g>
+            <rect class="table-box geo-table" x="270" y="40" width="120" height="100" rx="8"/>
+            <rect x="270" y="40" width="120" height="26" fill="#6ea8fe" opacity="0.12" rx="8"/>
+            <text class="table-name" x="280" y="59">POSTAL_ZONE</text>
+            <line class="divider" x1="270" y1="70" x2="390" y2="70"/>
+            <text class="pk-attr" x="280" y="85">🔑 postal_code</text>
+            <text class="attr-line" x="280" y="100">region</text>
+            <text class="ts-attr" x="280" y="113">created_at</text>
+          </g>
+
+          <!-- AREA -->
+          <g>
+            <rect class="table-box geo-table" x="410" y="40" width="100" height="100" rx="8"/>
+            <rect x="410" y="40" width="100" height="26" fill="#6ea8fe" opacity="0.12" rx="8"/>
+            <text class="table-name" x="425" y="59">AREA</text>
+            <line class="divider" x1="410" y1="70" x2="510" y2="70"/>
+            <text class="pk-attr" x="420" y="85">🔑 area_id</text>
+            <text class="fk-attr" x="420" y="100">→ postal_code</text>
+            <text class="attr-line" x="420" y="113">name</text>
+          </g>
+
+          <!-- CATEGORY -->
+          <g>
+            <rect class="table-box cat-table" x="550" y="40" width="100" height="85" rx="8"/>
+            <rect x="550" y="40" width="100" height="26" fill="#7ee2c0" opacity="0.15" rx="8"/>
+            <text class="table-name" x="560" y="59">CATEGORY</text>
+            <line class="divider" x1="550" y1="70" x2="650" y2="70"/>
+            <text class="pk-attr" x="560" y="85">🔑 category_id</text>
+            <text class="attr-line" x="560" y="100">name</text>
+          </g>
+
+          <!-- PLACES -->
+          <g>
+            <rect class="table-box place-table" x="690" y="20" width="130" height="145" rx="8"/>
+            <rect x="690" y="20" width="130" height="28" fill="#7ee2c0" opacity="0.18" rx="8"/>
+            <text class="table-name" x="705" y="41">PLACES</text>
+            <line class="divider" x1="690" y1="55" x2="820" y2="55"/>
+            <text class="pk-attr" x="700" y="72">🔑 place_id</text>
+            <text class="attr-line" x="700" y="87">name, address</text>
+            <text class="fk-attr" x="700" y="102">→ area_id</text>
+            <text class="fk-attr" x="700" y="117">→ category_id</text>
+            <text class="ts-attr" x="700" y="132">created_at</text>
+          </g>
+
+          <!-- USERS -->
+          <g>
+            <rect class="table-box user-table" x="870" y="280" width="120" height="115" rx="8"/>
+            <rect x="870" y="280" width="120" height="28" fill="#f0b866" opacity="0.12" rx="8"/>
+            <text class="table-name" x="888" y="301">USERS</text>
+            <line class="divider" x1="870" y1="315" x2="990" y2="315"/>
+            <text class="pk-attr" x="880" y="332">🔑 id, user_id</text>
+            <text class="attr-line" x="880" y="347">username</text>
+            <text class="attr-line" x="880" y="362">email</text>
+            <text class="ts-attr" x="880" y="375">joined_at</text>
+          </g>
+
+          <!-- LOGIN_DATA -->
+          <g>
+            <rect class="table-box user-table" x="1040" y="40" width="120" height="85" rx="8"/>
+            <rect x="1040" y="40" width="120" height="26" fill="#f0b866" opacity="0.12" rx="8"/>
+            <text class="table-name" x="1055" y="59">LOGIN_DATA</text>
+            <line class="divider" x1="1040" y1="70" x2="1160" y2="70"/>
+            <text class="pk-attr" x="1050" y="85">🔑 login_id</text>
+            <text class="fk-attr" x="1050" y="100">→ user_id</text>
+            <text class="ts-attr" x="1050" y="113">last_login</text>
+          </g>
+
+          <!-- FAVORITE -->
+          <g>
+            <rect class="table-box user-table" x="1040" y="160" width="120" height="100" rx="8"/>
+            <rect x="1040" y="160" width="120" height="26" fill="#f0b866" opacity="0.12" rx="8"/>
+            <text class="table-name" x="1055" y="181">FAVORITE</text>
+            <line class="divider" x1="1040" y1="195" x2="1160" y2="195"/>
+            <text class="pk-attr" x="1050" y="212">🔑 favorite_id</text>
+            <text class="fk-attr" x="1050" y="227">→ user_id</text>
+            <text class="fk-attr" x="1050" y="242">→ place_id</text>
+          </g>
+
+          <!-- REVIEW -->
+          <g>
+            <rect class="table-box user-table" x="1040" y="300" width="120" height="100" rx="8"/>
+            <rect x="1040" y="300" width="120" height="26" fill="#f0b866" opacity="0.12" rx="8"/>
+            <text class="table-name" x="1060" y="321">REVIEW</text>
+            <line class="divider" x1="1040" y1="335" x2="1160" y2="335"/>
+            <text class="pk-attr" x="1050" y="352">🔑 review_id</text>
+            <text class="fk-attr" x="1050" y="367">→ user_id</text>
+            <text class="fk-attr" x="1050" y="382">→ place_id</text>
+          </g>
+
+          <!-- REPORT -->
+          <g>
+            <rect class="table-box user-table" x="1040" y="440" width="120" height="85" rx="8"/>
+            <rect x="1040" y="440" width="120" height="26" fill="#f0b866" opacity="0.12" rx="8"/>
+            <text class="table-name" x="1060" y="461">REPORT</text>
+            <line class="divider" x1="1040" y1="475" x2="1160" y2="475"/>
+            <text class="pk-attr" x="1050" y="492">🔑 report_id</text>
+            <text class="fk-attr" x="1050" y="507">→ user_id</text>
+            <text class="fk-attr" x="1050" y="522">→ place_id</text>
+          </g>
+
+          <!-- REVIEW_ERROR_LOG -->
+          <g>
+            <rect class="table-box audit-table" x="30" y="200" width="130" height="105" rx="8"/>
+            <rect x="30" y="200" width="130" height="28" fill="#c084fc" opacity="0.1" rx="8"/>
+            <text class="table-name" x="45" y="221" style="fill:#c084fc">REVIEW_ERROR_LOG</text>
+            <line class="divider" x1="30" y1="235" x2="160" y2="235"/>
+            <text class="pk-attr" x="40" y="252">🔑 log_id</text>
+            <text class="ts-attr" x="40" y="267">logged_at ⏱</text>
+            <text class="attr-line" x="40" y="282">error_msg</text>
+          </g>
+
+          <!-- RELATIONSHIPS -->
+          <path class="relation" d="M 80 140 L 80 165 Q 80 175 100 175 L 150 175" marker-end="url(#arrowHead)"/>
+          <path class="relation" d="M 200 140 L 200 165 Q 200 175 230 175 L 270 175" marker-end="url(#arrowHead)"/>
+          <path class="relation" d="M 330 140 L 330 165 Q 330 175 370 175 L 410 175" marker-end="url(#arrowHead)"/>
+          <path class="relation" d="M 510 90 L 600 90 L 690 90" marker-end="url(#arrowHead)"/>
+          <path class="relation" d="M 650 82 L 690 82" marker-end="url(#arrowHead)"/>
+          <path class="relation" d="M 755 165 Q 810 220 870 330" stroke-width="2" opacity="0.7" marker-end="url(#arrowHead)"/>
+          <path class="relation" d="M 820 120 Q 900 140 1040 210" marker-end="url(#arrowHead)"/>
+          <path class="relation" d="M 820 140 Q 900 200 1040 350" marker-end="url(#arrowHead)"/>
+          <path class="relation" d="M 820 160 Q 900 300 1040 480" marker-end="url(#arrowHead)"/>
+          <path class="relation" d="M 930 280 Q 1000 150 1040 95" marker-end="url(#arrowHead)"/>
+          <line class="relation" x1="990" y1="300" x2="1040" y2="210" marker-end="url(#arrowHead)"/>
+          <line class="relation" x1="990" y1="330" x2="1040" y2="350" marker-end="url(#arrowHead)"/>
+          <path class="relation" d="M 950 395 Q 990 420 1040 470" marker-end="url(#arrowHead)"/>
+
+          <!-- LEGEND -->
+          <g opacity="0.8">
+            <text style="font-family:monospace;font-size:11px;fill:#7ee2c0;font-weight:600" x="30" y="545">🔑 Primary Key</text>
+            <text style="font-family:monospace;font-size:11px;fill:#f0b866;font-weight:600" x="200" y="545">→ Foreign Key</text>
+            <text style="font-family:monospace;font-size:11px;fill:#6ea8fe;font-weight:600" x="400" y="545">⏱ Timestamp</text>
+            <text style="font-family:monospace;font-size:11px;fill:#c084fc;font-weight:600" x="700" y="545">⚡ Trigger-fed Audit</text>
+            <text style="font-family:monospace;font-size:10px;fill:#66738a" x="30" y="565">25 constraints: 12 PKs (1 composite: users) + 11 FKs  |  Normalized 12-table schema  |  Spring 2026</text>
+          </g>
+        </svg>
+      </div>
+
+      <h4>Schema breakdown</h4>
+      <ul class="tight">
+        <li><strong>Geography cascade:</strong> state → city → postal_zone → area, establishing spatial hierarchy for venue placement.</li>
+        <li><strong>Venues:</strong> places table bridges geography and categories, with composite indexes on (area_id, category_id) for fast discovery.</li>
+        <li><strong>User lifecycle:</strong> users table with composite primary key (id, user_id); login_data tracks activity; favorite, review and report capture interactions.</li>
+        <li><strong>Audit by trigger:</strong> review_error_log is fed by a database trigger on failed review inserts — validation errors are logged automatically.</li>
+        <li><strong>Referential integrity:</strong> 11 foreign keys enforce consistency; 12 primary keys (one composite) define identity.</li>
+      </ul>
+
+      <h4>Indexing</h4>
+      <p>
+        B-tree indexes on primary keys, plus a composite index on (area_id, category_id) — the filter
+        pattern behind "places of this type in this area," the most common discovery query — checked
+        with query-plan analysis.
+      </p>
+
+      <p class="note">
+        Built and run on Supabase in Spring 2026; login records and trigger-logged errors in the live
+        database date the work to April–May 2026.
+      </p>
+
+      <div class="tags">
+        <span class="tag">PostgreSQL</span><span class="tag">Supabase</span><span class="tag">Relational design</span>
+        <span class="tag">Composite keys</span><span class="tag">Trigger functions</span>
+        <span class="tag">Index optimization</span><span class="tag">Team project</span>
+      </div>
+
+      <div class="proj-links">
+        <a href="https://github.com/its-Ravi-Singh/MODI-Map-of-Dynamic-Information" target="_blank" rel="noopener">Code <span>→</span></a>
+      </div>
+    </article>
+
+    <!-- ========== PROJECT 6: WAREHOUSE ========== -->
     <article class="proj reveal" data-reveal id="warehouse">
       <div class="proj-top">
         <div>
@@ -552,450 +995,6 @@ footer a{color:var(--ink-2)}
       </div>
     </article>
 
-    <!-- ========== PROJECT 3 ========== -->
-    <article class="proj reveal" data-reveal>
-      <div class="proj-top">
-        <div>
-          <h3>Retinal OCT Classification — Interpretability &amp; Deployment</h3>
-          <div class="meta">OCTMNIST · PyTorch CNNs · coursework, University at Buffalo</div>
-        </div>
-        <span class="badge">Complete</span>
-      </div>
-
-      <p>
-        Four-way classification of retinal OCT scans — choroidal neovascularization, diabetic macular
-        edema, drusen, normal. A baseline CNN, then an improved one. The useful part was
-        <strong>reading past the headline accuracy</strong>.
-      </p>
-
-      <h4>What I built</h4>
-      <ul class="tight">
-        <li>A baseline CNN (896K params) and an improved version (1.7M) adding BatchNorm, class-weighted
-            loss, weight decay, LR scheduling and early stopping. Test accuracy
-            <strong>71.2% → 76.5%</strong>.</li>
-        <li><strong>Interpretability via PyTorch forward hooks</strong> — capturing activations at early,
-            middle and late convolutions, plus the learned first-layer kernels.</li>
-        <li>A generated, self-contained deployment folder running a Gradio inference app.</li>
-      </ul>
-
-      <h4>Per-class recall — improved model</h4>
-      <div class="tablewrap">
-        <table>
-          <thead><tr><th>Class</th><th style="text-align:right">Precision</th><th style="text-align:right">Recall</th><th class="barcell">Recall</th></tr></thead>
-          <tbody>
-            <tr><td>Choroidal neovascularization</td><td class="num">0.66</td><td class="num">0.95</td><td><i class="bar win" style="--w:95%"></i></td></tr>
-            <tr><td>Diabetic macular edema</td><td class="num">0.89</td><td class="num">0.89</td><td><i class="bar win" style="--w:89%"></i></td></tr>
-            <tr class="win"><td>Drusen</td><td class="num">0.97</td><td class="num">0.29</td><td><i class="bar" style="--w:29%"></i></td></tr>
-            <tr><td>Normal</td><td class="num">0.74</td><td class="num">0.93</td><td><i class="bar win" style="--w:93%"></i></td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <p style="margin-top:20px">
-        <strong>Drusen recall is 0.29.</strong> The model misses seven in ten cases of that condition
-        while reporting 76.5% overall. Its precision on drusen is 0.97 — it is almost always right when
-        it makes the call, it just almost never makes it. In a clinical setting, sending 69 drusen
-        patients away as normal is the failure that matters, not the aggregate number.
-      </p>
-
-      <p class="note">
-        <strong>The validation score was misleading.</strong> The improved model scored <em>lower</em> on
-        validation (0.9049 vs 0.9139) yet higher on test. Validation follows the imbalanced training
-        distribution; the test set is balanced at 250 per class. Selecting on validation accuracy would
-        have made me keep the worse model — which is also most of why the baseline drops from 91% to 71%.
-      </p>
-
-      <div class="tags">
-        <span class="tag">PyTorch</span><span class="tag">CNNs</span><span class="tag">OCTMNIST</span>
-        <span class="tag">Class imbalance</span><span class="tag">Forward hooks</span>
-        <span class="tag">Model interpretability</span><span class="tag">Gradio</span>
-      </div>
-
-      <div class="proj-links">
-        <a href="https://github.com/its-Ravi-Singh/octmnist-cnn-interpretability" target="_blank" rel="noopener">Code <span>→</span></a>
-      </div>
-    </article>
-
-    <article class="proj reveal" data-reveal id="dqn">
-      <div class="proj-top">
-        <div>
-          <h3>Deep Q-Networks — DQN vs Double DQN</h3>
-          <div class="meta">Three control environments · PyTorch · matched hyperparameters</div>
-        </div>
-        <span class="badge">Complete</span>
-      </div>
-
-      <p>
-        Both algorithms written from scratch — replay buffer, target network, epsilon-greedy schedule
-        — and run head to head under identical settings. Double DQN exists to fix one thing: standard
-        DQN uses the same network to pick the best next action and to score it, and a max over noisy
-        estimates is biased upward. <strong>The question I actually wanted answered was when that fix
-        matters.</strong>
-      </p>
-
-      <h4>Greedy policy, true reward, mean over 10 episodes</h4>
-      <div class="tablewrap">
-        <table>
-          <thead><tr><th>Environment</th><th style="text-align:right">DQN</th><th style="text-align:right">Double DQN</th><th>Outcome</th></tr></thead>
-          <tbody>
-            <tr><td>GridWorld</td><td class="num">6.00</td><td class="num">4.40</td><td>plain DQN wins</td></tr>
-            <tr><td>CartPole</td><td class="num">500.0</td><td class="num">500.0</td><td>both solved</td></tr>
-            <tr class="win"><td>MountainCar</td><td class="num">−112.7</td><td class="num">−101.0</td><td>only Double DQN solved</td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <p class="note" style="margin-top:20px">
-        <strong>Double DQN is not uniformly better.</strong> It solved MountainCar where plain DQN
-        couldn't — sparse reward, long horizon, exactly where overestimation compounds. Both saturated
-        CartPole. But on a small tabular GridWorld with dense reward it scored <em>lower</em>, because a
-        deliberately conservative target just slows early value propagation when there was no bias
-        problem to fix. The correction pays off in proportion to how much overestimation was actually
-        hurting.
-      </p>
-
-      <p>
-        The repo logs the mean target-network value estimate on every training step, so the
-        overestimation gap between the two agents can be measured rather than asserted.
-      </p>
-
-      <div class="tags">
-        <span class="tag">PyTorch</span><span class="tag">DQN</span><span class="tag">Double DQN</span>
-        <span class="tag">Experience replay</span><span class="tag">Target networks</span>
-        <span class="tag">Gymnasium</span><span class="tag">Reward shaping</span>
-      </div>
-
-      <div class="proj-links">
-        <a href="https://github.com/its-Ravi-Singh/dqn-vs-double-dqn" target="_blank" rel="noopener">Code <span>→</span></a>
-      </div>
-    </article>
-
-    <article class="proj reveal" data-reveal id="nn-scratch">
-      <div class="proj-top">
-        <div>
-          <h3>Neural Network from Scratch — NumPy to PyTorch</h3>
-          <div class="meta">Backpropagation by hand · self-directed · Dec 2025 – Jan 2026</div>
-        </div>
-        <span class="badge">Complete</span>
-      </div>
-
-      <p>
-        Build the same network twice. First in pure NumPy — forward pass, chain-rule backpropagation,
-        BCE and MSE losses, SGD, all derived by hand with no autograd. Then rebuild the identical
-        architecture with <code>torch.nn.Module</code>.
-      </p>
-
-      <h4>The part that matters</h4>
-      <ul class="tight">
-        <li>Both implementations receive identical inputs and identical initial weights, and their
-            gradients are compared elementwise. <strong>They match.</strong></li>
-        <li>That check is what separates "I implemented backpropagation" from "I implemented it
-            <em>correctly</em>" — it catches the failure where a sign error or a missing transpose
-            still produces a loss curve that goes down, just to the wrong place.</li>
-        <li>Trained on MNIST digits, with the NumPy version writing its own parameter initialisation and
-            forward and backward passes end to end.</li>
-         <li>The same repo now also includes a scalar autograd engine built from scratch — 
-            the mechanism this project's <code>.backward()</code> calls are built on top of.</li>
-      </ul>
-
-      <p class="note">
-        Anyone can call <code>.backward()</code>. Debugging a run that isn't converging is guesswork if
-        that call is a black box — knowing the gradient into a sigmoid saturates when its input is
-        large, because I derived that term myself, is the difference between "try a lower learning rate"
-        and knowing where to look.
-      </p>
-
-      <div class="tags">
-        <span class="tag">NumPy</span><span class="tag">PyTorch</span><span class="tag">Backpropagation</span>
-        <span class="tag">Gradient checking</span><span class="tag">SGD</span>
-      </div>
-
-      <div class="proj-links">
-        <a href="https://github.com/its-Ravi-Singh/neural-networks-from-scratch" target="_blank" rel="noopener">Code <span>→</span></a>
-      </div>
-    </article>
-
-    <!-- ========== PROJECT 6: MODI DATABASE ========== -->
-    <article class="proj reveal" data-reveal>
-      <div class="proj-top">
-        <div>
-          <h3>MODI — Location Review Database Schema & Queries</h3>
-          <div class="meta">PostgreSQL · Supabase · CSE 560 DMQL course, Spring 2026 · Team project</div>
-        </div>
-        <span class="badge">Complete</span>
-      </div>
-
-      <p>
-        A normalized PostgreSQL database for a location review system: users discover places, save favorites, 
-        leave reviews, and report bad entries. Twelve-table schema across geography, venues, and user activity, 
-        with trigger-based audit logging. Built and deployed on Supabase during the Spring 2026 Data Models 
-        and Query Languages course.
-      </p>
-
-      <h4>Database schema</h4>
-      <div class="schema-container">
-        <svg viewBox="0 0 1360 620" preserveAspectRatio="xMidYMid meet" style="width:100%;height:auto;min-height:400px" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="geoGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" style="stop-color:#6ea8fe;stop-opacity:0.25"/>
-              <stop offset="100%" style="stop-color:#6ea8fe;stop-opacity:0.08"/>
-            </linearGradient>
-            <linearGradient id="catGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" style="stop-color:#7ee2c0;stop-opacity:0.25"/>
-              <stop offset="100%" style="stop-color:#7ee2c0;stop-opacity:0.08"/>
-            </linearGradient>
-            <linearGradient id="placeGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" style="stop-color:#7ee2c0;stop-opacity:0.3"/>
-              <stop offset="100%" style="stop-color:#7ee2c0;stop-opacity:0.1"/>
-            </linearGradient>
-            <linearGradient id="userGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" style="stop-color:#f0b866;stop-opacity:0.2"/>
-              <stop offset="100%" style="stop-color:#f0b866;stop-opacity:0.06"/>
-            </linearGradient>
-            <linearGradient id="auditGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" style="stop-color:#c084fc;stop-opacity:0.2"/>
-              <stop offset="100%" style="stop-color:#c084fc;stop-opacity:0.06"/>
-            </linearGradient>
-            <filter id="shadow">
-              <feDropShadow dx="0" dy="3" stdDeviation="4" flood-opacity="0.4" flood-color="#000"/>
-            </filter>
-            <marker id="arrowHead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
-              <polygon points="0 0, 10 3, 0 6" fill="#6ea8fe" opacity="0.7"/>
-            </marker>
-            <style>
-              .table-box { stroke-width: 2; filter: url(#shadow); }
-              .geo-table { fill: url(#geoGrad); stroke: #6ea8fe; }
-              .cat-table { fill: url(#catGrad); stroke: #7ee2c0; }
-              .place-table { fill: url(#placeGrad); stroke: #7ee2c0; }
-              .user-table { fill: url(#userGrad); stroke: #f0b866; }
-              .audit-table { fill: url(#auditGrad); stroke: #c084fc; stroke-dasharray: 4,3; }
-              .table-name { font-family: monospace; font-size: 13px; font-weight: 700; fill: #fff; letter-spacing: 0.5px; }
-              .pk-icon { fill: #7ee2c0; font-weight: bold; }
-              .attr-line { font-family: monospace; font-size: 10px; fill: #a4b0c4; }
-              .pk-attr { font-family: monospace; font-size: 10px; fill: #7ee2c0; font-weight: 600; }
-              .fk-attr { font-family: monospace; font-size: 10px; fill: #f0b866; font-weight: 600; }
-              .ts-attr { font-family: monospace; font-size: 9px; fill: #6ea8fe; font-style: italic; }
-              .divider { stroke: #2a3446; stroke-width: 1; opacity: 0.5; }
-              .relation { stroke: #6ea8fe; stroke-width: 1.5; fill: none; opacity: 0.55; }
-            </style>
-          </defs>
-
-          <!-- GEOGRAPHY TIER (LEFT) -->
-          <!-- STATE -->
-          <g>
-            <rect class="table-box geo-table" x="30" y="40" width="100" height="100" rx="8"/>
-            <rect x="30" y="40" width="100" height="26" fill="#6ea8fe" opacity="0.12" rx="8"/>
-            <text class="table-name" x="42" y="59">STATE</text>
-            <line class="divider" x1="30" y1="70" x2="130" y2="70"/>
-            <text class="pk-attr" x="40" y="85">🔑 state_id</text>
-            <text class="attr-line" x="40" y="100">name</text>
-            <text class="attr-line" x="40" y="113">code</text>
-          </g>
-
-          <!-- CITY -->
-          <g>
-            <rect class="table-box geo-table" x="150" y="40" width="100" height="100" rx="8"/>
-            <rect x="150" y="40" width="100" height="26" fill="#6ea8fe" opacity="0.12" rx="8"/>
-            <text class="table-name" x="162" y="59">CITY</text>
-            <line class="divider" x1="150" y1="70" x2="250" y2="70"/>
-            <text class="pk-attr" x="160" y="85">🔑 city_id</text>
-            <text class="fk-attr" x="160" y="100">→ state_id</text>
-            <text class="attr-line" x="160" y="113">name</text>
-          </g>
-
-          <!-- POSTAL_ZONE -->
-          <g>
-            <rect class="table-box geo-table" x="270" y="40" width="120" height="100" rx="8"/>
-            <rect x="270" y="40" width="120" height="26" fill="#6ea8fe" opacity="0.12" rx="8"/>
-            <text class="table-name" x="280" y="59">POSTAL_ZONE</text>
-            <line class="divider" x1="270" y1="70" x2="390" y2="70"/>
-            <text class="pk-attr" x="280" y="85">🔑 postal_code</text>
-            <text class="attr-line" x="280" y="100">region</text>
-            <text class="ts-attr" x="280" y="113">created_at</text>
-          </g>
-
-          <!-- AREA -->
-          <g>
-            <rect class="table-box geo-table" x="410" y="40" width="100" height="100" rx="8"/>
-            <rect x="410" y="40" width="100" height="26" fill="#6ea8fe" opacity="0.12" rx="8"/>
-            <text class="table-name" x="425" y="59">AREA</text>
-            <line class="divider" x1="410" y1="70" x2="510" y2="70"/>
-            <text class="pk-attr" x="420" y="85">🔑 area_id</text>
-            <text class="fk-attr" x="420" y="100">→ postal_code</text>
-            <text class="attr-line" x="420" y="113">name</text>
-          </g>
-
-          <!-- CATEGORY -->
-          <g>
-            <rect class="table-box cat-table" x="550" y="40" width="100" height="85" rx="8"/>
-            <rect x="550" y="40" width="100" height="26" fill="#7ee2c0" opacity="0.15" rx="8"/>
-            <text class="table-name" x="560" y="59">CATEGORY</text>
-            <line class="divider" x1="550" y1="70" x2="650" y2="70"/>
-            <text class="pk-attr" x="560" y="85">🔑 category_id</text>
-            <text class="attr-line" x="560" y="100">name</text>
-          </g>
-
-          <!-- PLACES (CENTER HUB) -->
-          <g>
-            <rect class="table-box place-table" x="690" y="20" width="130" height="145" rx="8"/>
-            <rect x="690" y="20" width="130" height="28" fill="#7ee2c0" opacity="0.18" rx="8"/>
-            <text class="table-name" x="705" y="41">PLACES</text>
-            <line class="divider" x1="690" y1="55" x2="820" y2="55"/>
-            <text class="pk-attr" x="700" y="72">🔑 place_id</text>
-            <text class="attr-line" x="700" y="87">name, address</text>
-            <text class="fk-attr" x="700" y="102">→ area_id</text>
-            <text class="fk-attr" x="700" y="117">→ category_id</text>
-            <text class="ts-attr" x="700" y="132">created_at</text>
-          </g>
-
-          <!-- USERS (CENTER BOTTOM) -->
-          <g>
-            <rect class="table-box user-table" x="870" y="280" width="120" height="115" rx="8"/>
-            <rect x="870" y="280" width="120" height="28" fill="#f0b866" opacity="0.12" rx="8"/>
-            <text class="table-name" x="888" y="301">USERS</text>
-            <line class="divider" x1="870" y1="315" x2="990" y2="315"/>
-            <text class="pk-attr" x="880" y="332">🔑 id, user_id</text>
-            <text class="attr-line" x="880" y="347">username</text>
-            <text class="attr-line" x="880" y="362">email</text>
-            <text class="ts-attr" x="880" y="375">joined_at</text>
-          </g>
-
-          <!-- LOGIN_DATA -->
-          <g>
-            <rect class="table-box user-table" x="1040" y="40" width="120" height="85" rx="8"/>
-            <rect x="1040" y="40" width="120" height="26" fill="#f0b866" opacity="0.12" rx="8"/>
-            <text class="table-name" x="1055" y="59">LOGIN_DATA</text>
-            <line class="divider" x1="1040" y1="70" x2="1160" y2="70"/>
-            <text class="pk-attr" x="1050" y="85">🔑 login_id</text>
-            <text class="fk-attr" x="1050" y="100">→ user_id</text>
-            <text class="ts-attr" x="1050" y="113">last_login</text>
-          </g>
-
-          <!-- FAVORITE_PLACE -->
-          <g>
-            <rect class="table-box user-table" x="1040" y="160" width="120" height="100" rx="8"/>
-            <rect x="1040" y="160" width="120" height="26" fill="#f0b866" opacity="0.12" rx="8"/>
-            <text class="table-name" x="1055" y="181">FAVORITE</text>
-            <line class="divider" x1="1040" y1="195" x2="1160" y2="195"/>
-            <text class="pk-attr" x="1050" y="212">🔑 favorite_id</text>
-            <text class="fk-attr" x="1050" y="227">→ user_id</text>
-            <text class="fk-attr" x="1050" y="242">→ place_id</text>
-          </g>
-
-          <!-- REVIEW -->
-          <g>
-            <rect class="table-box user-table" x="1040" y="300" width="120" height="100" rx="8"/>
-            <rect x="1040" y="300" width="120" height="26" fill="#f0b866" opacity="0.12" rx="8"/>
-            <text class="table-name" x="1060" y="321">REVIEW</text>
-            <line class="divider" x1="1040" y1="335" x2="1160" y2="335"/>
-            <text class="pk-attr" x="1050" y="352">🔑 review_id</text>
-            <text class="fk-attr" x="1050" y="367">→ user_id</text>
-            <text class="fk-attr" x="1050" y="382">→ place_id</text>
-          </g>
-
-          <!-- REPORT -->
-          <g>
-            <rect class="table-box user-table" x="1040" y="440" width="120" height="85" rx="8"/>
-            <rect x="1040" y="440" width="120" height="26" fill="#f0b866" opacity="0.12" rx="8"/>
-            <text class="table-name" x="1060" y="461">REPORT</text>
-            <line class="divider" x1="1040" y1="475" x2="1160" y2="475"/>
-            <text class="pk-attr" x="1050" y="492">🔑 report_id</text>
-            <text class="fk-attr" x="1050" y="507">→ user_id</text>
-            <text class="fk-attr" x="1050" y="522">→ place_id</text>
-          </g>
-
-          <!-- REVIEW_ERROR_LOG (AUDIT) -->
-          <g>
-            <rect class="table-box audit-table" x="30" y="200" width="130" height="105" rx="8"/>
-            <rect x="30" y="200" width="130" height="28" fill="#c084fc" opacity="0.1" rx="8"/>
-            <text class="table-name" x="45" y="221" style="fill:#c084fc">REVIEW_ERROR_LOG</text>
-            <line class="divider" x1="30" y1="235" x2="160" y2="235"/>
-            <text class="pk-attr" x="40" y="252">🔑 log_id</text>
-            <text class="ts-attr" x="40" y="267">logged_at ⏱</text>
-            <text class="attr-line" x="40" y="282">error_msg</text>
-          </g>
-
-          <!-- RELATIONSHIPS / ARROWS -->
-          <!-- STATE -> CITY -> AREA flow -->
-          <path class="relation" d="M 80 140 L 80 165 Q 80 175 100 175 L 150 175" marker-end="url(#arrowHead)"/>
-          <path class="relation" d="M 200 140 L 200 165 Q 200 175 230 175 L 270 175" marker-end="url(#arrowHead)"/>
-          <path class="relation" d="M 330 140 L 330 165 Q 330 175 370 175 L 410 175" marker-end="url(#arrowHead)"/>
-
-          <!-- AREA -> PLACES -->
-          <path class="relation" d="M 510 90 L 600 90 L 690 90" marker-end="url(#arrowHead)"/>
-
-          <!-- CATEGORY -> PLACES -->
-          <path class="relation" d="M 650 82 L 690 82" marker-end="url(#arrowHead)"/>
-
-          <!-- PLACES -> USERS (strong connection) -->
-          <path class="relation" d="M 755 165 Q 810 220 870 330" stroke-width="2" opacity="0.7" marker-end="url(#arrowHead)"/>
-
-          <!-- PLACES -> FAVORITE_PLACE -->
-          <path class="relation" d="M 820 120 Q 900 140 1040 210" marker-end="url(#arrowHead)"/>
-
-          <!-- PLACES -> REVIEW -->
-          <path class="relation" d="M 820 140 Q 900 200 1040 350" marker-end="url(#arrowHead)"/>
-
-          <!-- PLACES -> REPORT -->
-          <path class="relation" d="M 820 160 Q 900 300 1040 480" marker-end="url(#arrowHead)"/>
-
-          <!-- USERS -> LOGIN_DATA -->
-          <path class="relation" d="M 930 280 Q 1000 150 1040 95" marker-end="url(#arrowHead)"/>
-
-          <!-- USERS -> FAVORITE_PLACE -->
-          <line class="relation" x1="990" y1="300" x2="1040" y2="210" marker-end="url(#arrowHead)"/>
-
-          <!-- USERS -> REVIEW -->
-          <line class="relation" x1="990" y1="330" x2="1040" y2="350" marker-end="url(#arrowHead)"/>
-
-          <!-- USERS -> REPORT -->
-          <path class="relation" d="M 950 395 Q 990 420 1040 470" marker-end="url(#arrowHead)"/>
-
-          <!-- LEGEND -->
-          <g opacity="0.8">
-            <text style="font-family:monospace;font-size:11px;fill:#7ee2c0;font-weight:600" x="30" y="545">🔑 Primary Key</text>
-            <text style="font-family:monospace;font-size:11px;fill:#f0b866;font-weight:600" x="200" y="545">→ Foreign Key</text>
-            <text style="font-family:monospace;font-size:11px;fill:#6ea8fe;font-weight:600" x="400" y="545">⏱ Timestamp</text>
-            <text style="font-family:monospace;font-size:11px;fill:#c084fc;font-weight:600" x="700" y="545">⚡ Trigger-fed Audit</text>
-            <text style="font-family:monospace;font-size:10px;fill:#66738a" x="30" y="565">25 constraints: 12 PKs (1 composite: users) + 11 FKs  |  Normalized 12-table schema  |  Spring 2026</text>
-          </g>
-        </svg>
-      </div>
-
-      <h4>Schema breakdown</h4>
-      <ul class="tight">
-        <li><strong>Geography cascade:</strong> state → city → postal_zone → area, establishing spatial hierarchy for venue placement.</li>
-        <li><strong>Venues:</strong> places table bridges geography and categories, with composite indexes on (area_id, category_id) for fast discovery.</li>
-        <li><strong>User lifecycle:</strong> users table with composite primary key (id, user_id); login_data tracks activity; favorite_place, review, report capture interactions.</li>
-        <li><strong>Audit by trigger:</strong> review_error_log is server-fed via database trigger on failed review inserts — validation errors logged automatically.</li>
-        <li><strong>Referential integrity:</strong> 11 foreign keys enforce consistency; 12 primary keys (one composite) define identity.</li>
-      </ul>
-
-      <h4>Performance & queries</h4>
-      <p>
-        Team implemented indexing strategy (B-tree on PKs, composite on frequently-filtered columns), 
-        schema creation scripts, and data-loading pipelines. Query plan analysis showed measurable gains
-        in lookup latency on the places table — especially for the common (area_id, category_id) filter pattern.
-      </p>
-
-      <p class="note">
-        <strong>Authenticity proof:</strong> Live Supabase server timestamps show this was built in Spring 2026.
-        login_data.last_login spans Apr 19 – May 2 (301 rows, logged at 16:51:52 to 05:44:32). review_error_log
-        captures two trigger-fired entries Apr 26, 22:10:47 – 01:42:09. Not seeded data — written by the
-        running application and database at runtime.
-      </p>
-
-      <div class="tags">
-        <span class="tag">PostgreSQL</span><span class="tag">Supabase</span><span class="tag">Relational design</span>
-        <span class="tag">Composite keys</span><span class="tag">Trigger functions</span>
-        <span class="tag">Index optimization</span><span class="tag">Team project</span>
-      </div>
-
-      <div class="proj-links">
-        <a href="https://github.com/its-Ravi-Singh/MODI-Map-of-Dynamic-Information" target="_blank" rel="noopener">GitHub <span>→</span></a>
-      </div>
-    </article>
-
     <!-- ========== PROJECT 7: INDEPENDENT STUDY ========== -->
     <article class="proj reveal" data-reveal>
       <div class="proj-top">
@@ -1007,64 +1006,66 @@ footer a{color:var(--ink-2)}
       </div>
 
       <p>
-        Independent research into large language model systems, focusing on applied deployment challenges. 
-        The study direction involves investigating production patterns in LLM-based applications — 
-        query routing, retrieval-augmented generation, cost-accuracy trade-offs, and inference optimization.
+        Independent research into large language model systems, focused on applied deployment challenges:
+        query routing, retrieval-augmented generation, cost–accuracy trade-offs, and inference efficiency
+        in LLM-based applications.
       </p>
 
       <h4>Research scope</h4>
       <ul class="tight">
-        <li>Reading and synthesizing recent LLM systems papers — architectures, training approaches, deployment patterns.</li>
-        <li>Hands-on work with prompt engineering, fine-tuning, and RAG implementations.</li>
-        <li>Building evaluation frameworks to measure system behavior under real-world constraints.</li>
-        <li>Final deliverable: a technical report or reproducible system demonstrating applied insights.</li>
+        <li>Reading and synthesizing recent LLM systems papers — architectures, retrieval, and deployment patterns.</li>
+        <li>Hands-on work with prompt engineering, retrieval pipelines, and RAG implementations.</li>
+        <li>Building an evaluation framework that measures latency, cost and failure modes per stage, not just end accuracy.</li>
+        <li>Final deliverable: a reproducible system and technical report.</li>
       </ul>
 
       <p class="note">
-        <strong>Status:</strong> Research plan in development. Specific direction to be finalized with 
-        Professor Parvin. Expected completion: December 2026.
+        <strong>Status:</strong> Design phase — system architecture and evaluation plan in progress with
+        Professor Parvin. Working baseline targeted for mid-October 2026; completion December 2026.
       </p>
 
       <div class="tags">
-        <span class="tag">Large language models</span><span class="tag">System design</span>
-        <span class="tag">RAG</span><span class="tag">Fine-tuning</span>
-        <span class="tag">Production systems</span><span class="tag">Research</span>
+        <span class="tag">Large language models</span><span class="tag">RAG</span>
+        <span class="tag">Query routing</span><span class="tag">Evaluation</span>
+        <span class="tag">System design</span><span class="tag">Production systems</span>
       </div>
     </article>
 
   </div>
 </section>
 
-
-
 <section id="skills">
   <div class="wrap">
     <div class="sec-head reveal" data-reveal><h2><b>02</b>Technical</h2><div class="rule"></div></div>
     <div class="grid2 stagger" data-reveal>
       <div class="skillgroup">
-        <h5>Machine Learning & AI</h5>
-        <p>PyTorch · scikit-learn · Deep Learning · Transformers &amp; attention · Data Preprocessing · Model Evaluation &amp; Monitoring · Statistics &amp; Probability · Offline RL · Preference learning (RLHF) · CNNs · PEFT / LoRA · Model interpretability · Forward hooks · Exploratory Data Analysis</p>
+        <h5>LLM Systems</h5>
+        <p>Retrieval-augmented generation (RAG) · Prompt engineering · Structured outputs &amp; function calling · Embeddings · Vector databases · Chunking strategies · LangChain</p>
+      </div>
+      <div class="skillgroup">
+        <h5>Machine Learning &amp; AI</h5>
+        <p>PyTorch · scikit-learn · Deep Learning · Transformers &amp; attention · Data Preprocessing · Model Evaluation &amp; Monitoring · Statistics &amp; Probability · Offline RL · Preference learning (RLHF) · CNNs · Model interpretability · Forward hooks · Exploratory Data Analysis</p>
       </div>
       <div class="skillgroup">
         <h5>Languages</h5>
-        <p>Python · TypeScript / JavaScript · Java (foundational)</p>
+        <p>Python · TypeScript / JavaScript · SQL · Java (foundational)</p>
       </div>
       <div class="skillgroup">
-        <h5>Frontend & UI</h5>
-        <p>Angular 5–14 · React · TypeScript · RxJS · Material Design · Gradio (ML deployment) · responsive web design</p>
-      </div>
-      <div class="skillgroup">
-        <h5>Backend & APIs</h5>
+        <h5>Backend &amp; APIs</h5>
         <p>REST APIs · API Integration · Node.js · GraphQL (v15, security patches) · Python automation · FastAPI · production services · microservices architecture</p>
       </div>
       <div class="skillgroup">
         <h5>Database &amp; Infrastructure</h5>
-        <p>PostgreSQL · schema design · query optimization · composite indexing · trigger functions · 
-           database migration · Supabase · Docker · Kubernetes · GCP · Git / GitHub</p>
+        <p>PostgreSQL · schema design · query optimization · composite indexing · trigger functions ·
+           database migration · Supabase · Docker · Kubernetes (foundational) · GCP · Git / GitHub</p>
+      </div>
+      <div class="skillgroup">
+        <h5>Frontend &amp; UI</h5>
+        <p>Angular 5–14 · TypeScript · RxJS · Material Design · Gradio (ML deployment) · responsive web design</p>
       </div>
       <div class="skillgroup">
         <h5>Development Practice</h5>
-        <p>Data structures &amp; algorithms (ongoing, GitHub-tracked) · agile / scrum · test-driven design · 
+        <p>Data structures &amp; algorithms (ongoing, GitHub-tracked) · agile / scrum ·
            production release cycles · debugging from first principles · cross-functional collaboration</p>
       </div>
     </div>
@@ -1076,12 +1077,13 @@ footer a{color:var(--ink-2)}
     <div class="sec-head reveal" data-reveal><h2><b>03</b>Background</h2><div class="rule"></div></div>
     <div class="stagger" data-reveal>
       <div class="xp">
-        <div class="xp-when">Present</div>
+        <div class="xp-when">2024 — Dec 2026</div>
         <div class="xp-what">
           <h3>MS, Computer Science (AI/ML)</h3>
-          <p class="org">University at Buffalo · expected December 2026</p>
+          <p class="org">University at Buffalo · graduating December 2026</p>
           <p>Coursework in deep learning and reinforcement learning, with project work in offline RL,
-             sequence models, medical image classification, and database systems.</p>
+             sequence models, medical image classification, and database systems. Available for
+             full-time roles from early 2027.</p>
         </div>
       </div>
       <div class="xp">
@@ -1089,8 +1091,15 @@ footer a{color:var(--ink-2)}
         <div class="xp-what">
           <h3>Software Developer</h3>
           <p class="org">Intellect Design Arena · Mumbai</p>
-          <p>Two years building and shipping fintech software — Angular front ends, GraphQL services and
-             Python automation. Real users, real release cycles, real consequences for breaking things.</p>
+          <p>Two years building and shipping fintech software for banking clients — Angular front ends
+             (including an Angular 5 → 14 migration), GraphQL services, a GraphQL-to-PostgreSQL migration
+             for BNY, and Python automation. Real users, real release cycles, real consequences for
+             breaking things.</p>
+          <p><strong style="color:var(--ink);font-weight:600">ANZ Bank reporting engine:</strong> fixed a
+             long-standing production failure where the engine exhausted heap memory beyond one week of
+             data. Redesigned the indexes and moved static computations to index-only lookups, extending
+             coverage to roughly two months within ANZ's 1-minute export limit — while keeping per-user
+             entitlement masking intact on pooled accounts.</p>
         </div>
       </div>
       <div class="xp">
@@ -1107,12 +1116,12 @@ footer a{color:var(--ink-2)}
 <section id="contact">
   <div class="wrap reveal" data-reveal>
     <div class="sec-head"><h2><b>04</b>Contact</h2><div class="rule"></div></div>
-    <p class="big-cta">Open to applied AI/ML roles.</p>
-    <p class="lede">Internships and full-time. Email reaches me fastest.</p>
+    <p class="big-cta">Open to full-time AI/ML engineering roles.</p>
+    <p class="lede">Available from early 2027. Email reaches me fastest.</p>
     <div class="links">
       <a class="btn primary" href="mailto:ravisingh7421@gmail.com">ravisingh7421@gmail.com</a>
       <a class="btn" href="https://github.com/its-Ravi-Singh" target="_blank" rel="noopener">github.com/its-Ravi-Singh</a>
-      <a class="btn" href="https://linkedin.com/in/ravi-rajaram-singh-47551a206" target="_blank" rel="noopener">linkedin.com/in/ravi-rajaram-singh-47551a206/</a>
+      <a class="btn" href="https://linkedin.com/in/ravi-rajaram-singh-47551a206" target="_blank" rel="noopener">linkedin.com/in/ravi-rajaram-singh-47551a206</a>
     </div>
   </div>
 </section>
@@ -1234,7 +1243,6 @@ footer a{color:var(--ink-2)}
   }
 
   if(reduced){
-    // static end-state: show the full route without motion
     PATH.forEach(function(n){
       if(Array.isArray(n)) cells[idx(n[0],n[1])].classList.add('trail');
     });
