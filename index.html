@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Ravi Rajaram Singh — AI/ML Engineer</title>
-<meta name="description" content="MS CS (AI/ML) at University at Buffalo, graduating Dec 2026. LLM systems, RAG, applied deep learning, and two years of production fintech engineering.">
+<meta name="description" content="MS CS (AI/ML) at University at Buffalo, graduating Dec 2026. LLM systems, RAG, agentic AI, applied deep learning, and two years of production fintech engineering.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://its-ravi-singh.github.io/">
 <meta property="og:title" content="Ravi Rajaram Singh — AI/ML Engineer">
-<meta property="og:description" content="MS CS (AI/ML) at University at Buffalo, graduating Dec 2026. LLM systems, RAG, applied deep learning, and two years of production fintech engineering.">
+<meta property="og:description" content="MS CS (AI/ML) at University at Buffalo, graduating Dec 2026. LLM systems, RAG, agentic AI, applied deep learning, and two years of production fintech engineering.">
 <meta name="twitter:card" content="summary">
 <style>
 /* ============================================================
@@ -236,6 +236,13 @@ figure.vid figcaption{
 }
 .note strong{color:var(--ink-2)}
 
+/* agentic loop strip */
+.loop{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:6px 0 8px;
+  font-family:var(--mono);font-size:12px;color:var(--ink-2)}
+.loop span{padding:7px 12px;border:1px solid var(--line-2);border-radius:8px;background:rgba(6,8,12,.5)}
+.loop span.hot{border-color:#4a3d20;color:var(--amber)}
+.loop i{font-style:normal;color:var(--ink-3)}
+
 .tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}
 .tag{font-family:var(--mono);font-size:11px;padding:5px 10px;border-radius:7px;
   background:rgba(255,255,255,.028);border:1px solid var(--line);color:var(--ink-2);
@@ -361,12 +368,13 @@ footer a{color:var(--ink-2)}
 
 <header>
   <div class="wrap stagger" data-reveal>
-    <div class="eyebrow">AI/ML Engineer · LLM Systems · RAG · Production Deployment</div>
+    <div class="eyebrow">AI/ML Engineer · Software Engineer · LLM Systems · RAG · Production ML Deployment</div>
     <h1>Building AI systems<br>that ship to production.</h1>
     <p class="lede">
       MS Computer Science (AI/ML) at the <strong>University at Buffalo</strong>, graduating December 2026.
       Two years shipping production fintech software at <strong>Intellect Design Arena</strong> for banks
-      including ANZ and BNY — TypeScript full-stack, GraphQL, PostgreSQL, real users, real constraints.
+      including ANZ and BNY — RAG retrieval pipelines, GraphQL, PostgreSQL, TypeScript full-stack,
+      real users, real constraints.
     </p>
     <p class="lede">
       I build AI systems from first principles — from hand-derived backpropagation to LLM retrieval
@@ -375,7 +383,7 @@ footer a{color:var(--ink-2)}
     </p>
 
     <p style="font-size: 15px; color: var(--ink-2); margin: 20px 0 0; line-height: 1.7;">
-      <strong>What I'm solving:</strong> How to build models that actually work · understanding what the data is telling you · deploying systems that are reliable and transparent.
+      <strong>Currently building:</strong> agentic routing and RAG escalation for explainable pedestrian perception in autonomous driving — independent research at UB.
     </p>
 
     <div class="links">
@@ -394,12 +402,89 @@ footer a{color:var(--ink-2)}
   <div class="wrap">
     <div class="sec-head reveal" data-reveal><h2><b>01</b>Selected Work</h2><div class="rule"></div></div>
 
-    <!-- ========== PROJECT 1: OFFLINE RL ========== -->
+    <!-- ========== PROJECT 1: AGENTIC RAG (IN PROGRESS) ========== -->
+    <article class="proj reveal" data-reveal id="agentic-rag">
+      <div class="proj-top">
+        <div>
+          <h3>Agentic RAG for Explainable Pedestrian Perception</h3>
+          <div class="meta">CSE 700E Independent Study · University at Buffalo · Supervised by Prof. Shamsad Parvin · Fall 2026</div>
+        </div>
+        <span class="badge wip">In Progress</span>
+      </div>
+
+      <p>
+        A self-driving perception stack has to be fast, and it has to explain itself. This research builds
+        on a published multi-attribute pedestrian perception model — <strong>YOLOv8 detection plus a frozen
+        Vision Transformer with eight LoRA adapters</strong> (action, look, cross, occlusion, weather, time
+        of day, road presence, density) on the JAAD driving dataset — whose adapters are currently switched
+        on and off by hand-written rules.
+      </p>
+      <p>
+        <strong>The goal: make inference agentic.</strong> Decide which adapters to run for each frame, check
+        whether the safety-critical answers can be trusted, look up traffic-rule knowledge when they can't,
+        and leave a plain-language record of why.
+      </p>
+
+      <h4>The decision loop I'm building</h4>
+      <div class="loop" aria-label="Agentic decision loop">
+        <span>Route</span><i>→</i><span>Run selected adapters</span><i>→</i>
+        <span class="hot">Check Look / Cross confidence</span><i>→</i>
+        <span>Escalate: re-route + retrieve rules</span><i>→</i><span>Log + explain</span>
+      </div>
+
+      <h4>What I'm building</h4>
+      <ul class="tight">
+        <li><strong>Learned router</strong> — a small network over the ViT embedding and attribute scores
+            that predicts which adapters to fire, trained on oracle labels: the smallest adapter subset that
+            reproduces the all-adapters output.</li>
+        <li><strong>Confidence gate and escalation</strong> — if confidence on Look or Cross (whether a
+            pedestrian is watching the car, and whether they are crossing) falls below a threshold, the
+            loop re-fires skipped adapters and re-routes instead of committing to an uncertain answer.</li>
+        <li><strong>RAG escalation</strong> — uncertain frames retrieve relevant traffic-rule knowledge to
+            ground the decision.</li>
+        <li><strong>Decision log to explanation</strong> — every frame records adapters fired, confidences
+            and escalations, and an LLM turns that trace into a readable explanation.</li>
+      </ul>
+
+      <h4>How it will be judged</h4>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>Dimension</th><th>Baseline</th><th>Question to answer</th></tr></thead>
+          <tbody>
+            <tr><td>Latency</td><td>All adapters 110.75 ms/frame · rule-based 78.63 ms/frame</td><td>Match rule-based speed without hand tuning</td></tr>
+            <tr><td>Accuracy</td><td>Running all 8 adapters</td><td>No loss from skipping adapters</td></tr>
+            <tr><td>Generalization</td><td>Rules tuned on JAAD</td><td>Train on JAAD, test on PIE and a third dataset with zero retuning</td></tr>
+            <tr><td>Explainability</td><td>Opaque if-then rules</td><td>A readable, per-frame decision trace</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="note">
+        <strong>Status:</strong> the full perception and evaluation pipeline is in the repo — JAAD annotation
+        extraction, detection and adapter inference, per-attribute metrics, and an adaptive-vs-baseline
+        ablation. The router, escalation loop and RAG layer are being built this term, with commits pushed
+        weekly. Paper write-up targeted for December 2026.
+      </p>
+
+      <div class="tags">
+        <span class="tag">PyTorch</span><span class="tag">Vision Transformers</span>
+        <span class="tag">PEFT / LoRA</span><span class="tag">YOLOv8</span>
+        <span class="tag">Agentic routing</span><span class="tag">RAG</span>
+        <span class="tag">LLM explanations</span><span class="tag">JAAD / PIE</span>
+        <span class="tag">Latency evaluation</span>
+      </div>
+
+      <div class="proj-links">
+        <a href="https://github.com/its-Ravi-Singh/agentic-rag-pedestrian-perception" target="_blank" rel="noopener">Code <span>→</span></a>
+      </div>
+    </article>
+
+    <!-- ========== PROJECT 2: OFFLINE RL ========== -->
     <article class="proj reveal" data-reveal>
       <div class="proj-top">
         <div>
           <h3>Offline RL: Decision Transformer with Preference Learning</h3>
-          <div class="meta">Graduate Deep Learning &amp; RL capstone · D4RL / Minari Hopper · PyTorch</div>
+          <div class="meta">Graduate Deep Learning &amp; RL capstone · two-person team · D4RL / Minari Hopper · PyTorch</div>
         </div>
         <span class="badge">Complete</span>
       </div>
@@ -412,7 +497,7 @@ footer a{color:var(--ink-2)}
         those labels are noisy or wrong.
       </p>
 
-      <h4>What I designed and built</h4>
+      <h4>What the project built</h4>
       <ul class="tight">
         <li>A causal Decision Transformer (726K params, 3 layers, 4 heads) over return-to-go, state and
             action tokens, trained with a masked-MSE action objective.</li>
@@ -426,6 +511,7 @@ footer a{color:var(--ink-2)}
             failure mode that matters, since those push training hardest in the wrong direction.</li>
         <li>A Gradio demo with live action prediction and recorded Hopper rollouts.</li>
       </ul>
+      <p><strong>My part:</strong> the Decision Transformer and the preference pipeline.</p>
 
       <h4>The two policies, running</h4>
       <figure class="vid">
@@ -486,7 +572,7 @@ footer a{color:var(--ink-2)}
       </div>
     </article>
 
-    <!-- ========== PROJECT 2: OCT ========== -->
+    <!-- ========== PROJECT 3: OCT ========== -->
     <article class="proj reveal" data-reveal>
       <div class="proj-top">
         <div>
@@ -550,7 +636,7 @@ footer a{color:var(--ink-2)}
       </div>
     </article>
 
-    <!-- ========== PROJECT 3: DQN ========== -->
+    <!-- ========== PROJECT 4: DQN ========== -->
     <article class="proj reveal" data-reveal id="dqn">
       <div class="proj-top">
         <div>
@@ -605,7 +691,7 @@ footer a{color:var(--ink-2)}
       </div>
     </article>
 
-    <!-- ========== PROJECT 4: NN FROM SCRATCH ========== -->
+    <!-- ========== PROJECT 5: NN FROM SCRATCH ========== -->
     <article class="proj reveal" data-reveal id="nn-scratch">
       <div class="proj-top">
         <div>
@@ -651,7 +737,7 @@ footer a{color:var(--ink-2)}
       </div>
     </article>
 
-    <!-- ========== PROJECT 5: MODI DATABASE ========== -->
+    <!-- ========== PROJECT 6: MODI DATABASE ========== -->
     <article class="proj reveal" data-reveal>
       <div class="proj-top">
         <div>
@@ -912,7 +998,7 @@ footer a{color:var(--ink-2)}
       </div>
     </article>
 
-    <!-- ========== PROJECT 6: WAREHOUSE ========== -->
+    <!-- ========== PROJECT 7: WAREHOUSE ========== -->
     <article class="proj reveal" data-reveal id="warehouse">
       <div class="proj-top">
         <div>
@@ -995,42 +1081,6 @@ footer a{color:var(--ink-2)}
       </div>
     </article>
 
-    <!-- ========== PROJECT 7: INDEPENDENT STUDY ========== -->
-    <article class="proj reveal" data-reveal>
-      <div class="proj-top">
-        <div>
-          <h3>CSE 700E Independent Study — LLM Systems Research</h3>
-          <div class="meta">Supervised by Prof. Shamsad Parvin · Fall 2026 · In progress</div>
-        </div>
-        <span class="badge wip">In Progress</span>
-      </div>
-
-      <p>
-        Independent research into large language model systems, focused on applied deployment challenges:
-        query routing, retrieval-augmented generation, cost–accuracy trade-offs, and inference efficiency
-        in LLM-based applications.
-      </p>
-
-      <h4>Research scope</h4>
-      <ul class="tight">
-        <li>Reading and synthesizing recent LLM systems papers — architectures, retrieval, and deployment patterns.</li>
-        <li>Hands-on work with prompt engineering, retrieval pipelines, and RAG implementations.</li>
-        <li>Building an evaluation framework that measures latency, cost and failure modes per stage, not just end accuracy.</li>
-        <li>Final deliverable: a reproducible system and technical report.</li>
-      </ul>
-
-      <p class="note">
-        <strong>Status:</strong> Design phase — system architecture and evaluation plan in progress with
-        Professor Parvin. Working baseline targeted for mid-October 2026; completion December 2026.
-      </p>
-
-      <div class="tags">
-        <span class="tag">Large language models</span><span class="tag">RAG</span>
-        <span class="tag">Query routing</span><span class="tag">Evaluation</span>
-        <span class="tag">System design</span><span class="tag">Production systems</span>
-      </div>
-    </article>
-
   </div>
 </section>
 
@@ -1039,25 +1089,25 @@ footer a{color:var(--ink-2)}
     <div class="sec-head reveal" data-reveal><h2><b>02</b>Technical</h2><div class="rule"></div></div>
     <div class="grid2 stagger" data-reveal>
       <div class="skillgroup">
-        <h5>LLM Systems</h5>
-        <p>Retrieval-augmented generation (RAG) · Prompt engineering · Structured outputs &amp; function calling · Embeddings · Vector databases · Chunking strategies · LangChain</p>
+        <h5>LLM Systems &amp; Agentic AI</h5>
+        <p>Retrieval-augmented generation (RAG) · LLM-based response generation · Retrieval pipelines · Agentic routing &amp; escalation · PEFT / LoRA · Vision Transformers</p>
       </div>
       <div class="skillgroup">
         <h5>Machine Learning &amp; AI</h5>
-        <p>PyTorch · scikit-learn · Deep Learning · Transformers &amp; attention · Data Preprocessing · Model Evaluation &amp; Monitoring · Statistics &amp; Probability · Offline RL · Preference learning (RLHF) · CNNs · Model interpretability · Forward hooks · Exploratory Data Analysis</p>
+        <p>PyTorch · scikit-learn · Deep learning · Transformers &amp; attention · CNNs · Offline RL · Preference learning (RLHF) · Model evaluation · Model interpretability · Forward hooks · Reproducible experiments · Model deployment (Gradio)</p>
       </div>
       <div class="skillgroup">
         <h5>Languages</h5>
-        <p>Python · TypeScript / JavaScript · SQL · Java (foundational)</p>
+        <p>Python · SQL · Java · TypeScript / JavaScript</p>
       </div>
       <div class="skillgroup">
         <h5>Backend &amp; APIs</h5>
-        <p>REST APIs · API Integration · Node.js · GraphQL (v15, security patches) · Python automation · FastAPI · production services · microservices architecture</p>
+        <p>REST APIs · GraphQL (v15 security upgrade) · Node.js · FastAPI · Spring Boot · Python automation · production services</p>
       </div>
       <div class="skillgroup">
-        <h5>Database &amp; Infrastructure</h5>
-        <p>PostgreSQL · schema design · query optimization · composite indexing · trigger functions ·
-           database migration · Supabase · Docker · Kubernetes (foundational) · GCP · Git / GitHub</p>
+        <h5>Data &amp; Infrastructure</h5>
+        <p>PostgreSQL · Elasticsearch · schema design &amp; migration · query optimization · database indexing ·
+           ETL pipelines (Pandas, NumPy) · Docker · Jenkins · Maven · GCP · Git / GitHub · Linux</p>
       </div>
       <div class="skillgroup">
         <h5>Frontend &amp; UI</h5>
@@ -1065,8 +1115,8 @@ footer a{color:var(--ink-2)}
       </div>
       <div class="skillgroup">
         <h5>Development Practice</h5>
-        <p>Data structures &amp; algorithms (ongoing, GitHub-tracked) · agile / scrum ·
-           production release cycles · debugging from first principles · cross-functional collaboration</p>
+        <p>Production support &amp; root-cause analysis · debugging from first principles · code review ·
+           unit testing · agile release cycles · data structures &amp; algorithms (ongoing, GitHub-tracked)</p>
       </div>
     </div>
   </div>
@@ -1077,24 +1127,25 @@ footer a{color:var(--ink-2)}
     <div class="sec-head reveal" data-reveal><h2><b>03</b>Background</h2><div class="rule"></div></div>
     <div class="stagger" data-reveal>
       <div class="xp">
-        <div class="xp-when">2024 — Dec 2026</div>
+        <div class="xp-when">2025 — Dec 2026</div>
         <div class="xp-what">
           <h3>MS, Computer Science (AI/ML)</h3>
-          <p class="org">University at Buffalo · graduating December 2026</p>
-          <p>Coursework in deep learning and reinforcement learning, with project work in offline RL,
-             sequence models, medical image classification, and database systems. Available for
-             full-time roles from early 2027.</p>
+          <p class="org">University at Buffalo · GPA 3.7/4.0 · graduating December 2026</p>
+          <p>Coursework in deep learning, machine learning and reinforcement learning, plus an independent
+             study in agentic AI and RAG for autonomous driving. Project work in offline RL, sequence models,
+             medical image classification, and database systems. Available for full-time roles from early 2027.</p>
         </div>
       </div>
       <div class="xp">
         <div class="xp-when">2022 — 2024</div>
         <div class="xp-what">
-          <h3>Software Developer</h3>
+          <h3>Software Engineer</h3>
           <p class="org">Intellect Design Arena · Mumbai</p>
-          <p>Two years building and shipping fintech software for banking clients — Angular front ends
-             (including an Angular 5 → 14 migration), GraphQL services, a GraphQL-to-PostgreSQL migration
-             for BNY, and Python automation. Real users, real release cycles, real consequences for
-             breaking things.</p>
+          <p>Two years building and shipping fintech software for banking clients — retrieval pipelines for
+             a RAG-based internal assistant that connected enterprise banking data to LLM-generated answers,
+             Angular front ends (including an Angular 5 → 14 migration), GraphQL services, a
+             GraphQL-to-PostgreSQL migration for BNY, and Python automation. Real users, real release cycles,
+             real consequences for breaking things.</p>
           <p><strong style="color:var(--ink);font-weight:600">ANZ Bank reporting engine:</strong> fixed a
              long-standing production failure where the engine exhausted heap memory beyond one week of
              data. Redesigned the indexes and moved static computations to index-only lookups, extending
@@ -1106,7 +1157,7 @@ footer a{color:var(--ink-2)}
         <div class="xp-when">2018 — 2022</div>
         <div class="xp-what">
           <h3>BE, Computer Engineering</h3>
-          <p class="org">Mumbai</p>
+          <p class="org">Lokmanya Tilak College of Engineering · Mumbai</p>
         </div>
       </div>
     </div>
@@ -1116,7 +1167,7 @@ footer a{color:var(--ink-2)}
 <section id="contact">
   <div class="wrap reveal" data-reveal>
     <div class="sec-head"><h2><b>04</b>Contact</h2><div class="rule"></div></div>
-    <p class="big-cta">Open to full-time AI/ML engineering roles.</p>
+    <p class="big-cta">Open to full-time AI/ML and software engineering roles.</p>
     <p class="lede">Available from early 2027. Email reaches me fastest.</p>
     <div class="links">
       <a class="btn primary" href="mailto:ravisingh7421@gmail.com">ravisingh7421@gmail.com</a>
