@@ -415,13 +415,13 @@ footer a{color:var(--ink-2)}
       <p>
         A self-driving perception stack has to be fast, and it has to explain itself. This research builds
         on a published multi-attribute pedestrian perception model — <strong>YOLOv8 detection plus a frozen
-        Vision Transformer with eight LoRA adapters</strong> (action, look, cross, occlusion, weather, time
-        of day, road presence, density) on the JAAD driving dataset — whose adapters are currently switched
-        on and off by hand-written rules.
+        Vision Transformer with eight PEFT adapters</strong> (LoRA, LoHa and AdaLoRA, for action, look, cross,
+        occlusion, weather, time of day, road presence and density) on the JAAD driving dataset — whose
+        adapters are currently switched on and off by hand-written rules.
       </p>
       <p>
         <strong>The goal: make inference agentic.</strong> Decide which adapters to run for each frame, check
-        whether the safety-critical answers can be trusted, look up traffic-rule knowledge when they can't,
+        whether the safety-critical answers can be trusted, look up similar past scenes when they can't,
         and leave a plain-language record of why.
       </p>
 
@@ -429,7 +429,7 @@ footer a{color:var(--ink-2)}
       <div class="loop" aria-label="Agentic decision loop">
         <span>Route</span><i>→</i><span>Run selected adapters</span><i>→</i>
         <span class="hot">Check Look / Cross confidence</span><i>→</i>
-        <span>Escalate: re-route + retrieve rules</span><i>→</i><span>Log + explain</span>
+        <span>Escalate: more adapters + scene memory</span><i>→</i><span>Log + explain</span>
       </div>
 
       <h4>What I'm building</h4>
@@ -439,11 +439,11 @@ footer a{color:var(--ink-2)}
             reproduces the all-adapters output.</li>
         <li><strong>Confidence gate and escalation</strong> — if confidence on Look or Cross (whether a
             pedestrian is watching the car, and whether they are crossing) falls below a threshold, the
-            loop re-fires skipped adapters and re-routes instead of committing to an uncertain answer.</li>
-        <li><strong>RAG escalation</strong> — uncertain frames retrieve relevant traffic-rule knowledge to
-            ground the decision.</li>
+            loop runs more adapters once more instead of committing to an uncertain answer.</li>
+        <li><strong>Scene memory (retrieval)</strong> — a FAISS index of previously seen frames and their
+            labels gives the router a prior from similar scenes and a cheap fallback when the model is unsure.</li>
         <li><strong>Decision log to explanation</strong> — every frame records adapters fired, confidences
-            and escalations, and an LLM turns that trace into a readable explanation.</li>
+            and escalations as a readable summary. LLM explanations grounded in traffic rules are a stretch goal.</li>
       </ul>
 
       <h4>How it will be judged</h4>
@@ -453,25 +453,25 @@ footer a{color:var(--ink-2)}
           <tbody>
             <tr><td>Latency</td><td>All adapters 110.75 ms/frame · rule-based 78.63 ms/frame</td><td>Match rule-based speed without hand tuning</td></tr>
             <tr><td>Accuracy</td><td>Running all 8 adapters</td><td>No loss from skipping adapters</td></tr>
-            <tr><td>Generalization</td><td>Rules tuned on JAAD</td><td>Train on JAAD, test on PIE and a third dataset with zero retuning</td></tr>
+            <tr><td>Generalization</td><td>Rules tuned on JAAD</td><td>Results per dataset on JAAD, PIE and BDD100K, plus a leave-one-dataset-out test</td></tr>
             <tr><td>Explainability</td><td>Opaque if-then rules</td><td>A readable, per-frame decision trace</td></tr>
           </tbody>
         </table>
       </div>
 
       <p class="note">
-        <strong>Status:</strong> the full perception and evaluation pipeline is in the repo — JAAD annotation
-        extraction, detection and adapter inference, per-attribute metrics, and an adaptive-vs-baseline
-        ablation. The router, escalation loop and RAG layer are being built this term, with commits pushed
-        weekly. Paper write-up targeted for December 2026.
+        <strong>Status (October 2026):</strong> the original perception and evaluation pipeline is in the
+        repo, credited to the paper's authors. My work so far restructures it into a package with one shared
+        ViT carrying all eight adapters, a JAAD loader on the official splits, and a feature cache of frame
+        embeddings, adapter probabilities and per-adapter latency. The router, escalation loop and scene
+        memory are next, with commits pushed weekly. Paper write-up targeted for December 2026.
       </p>
 
       <div class="tags">
         <span class="tag">PyTorch</span><span class="tag">Vision Transformers</span>
         <span class="tag">PEFT / LoRA</span><span class="tag">YOLOv8</span>
-        <span class="tag">Agentic routing</span><span class="tag">RAG</span>
-        <span class="tag">LLM explanations</span><span class="tag">JAAD / PIE</span>
-        <span class="tag">Latency evaluation</span>
+        <span class="tag">Agentic routing</span><span class="tag">Retrieval (FAISS)</span>
+        <span class="tag">JAAD / PIE / BDD100K</span><span class="tag">Latency evaluation</span>
       </div>
 
       <div class="proj-links">
@@ -510,8 +510,11 @@ footer a{color:var(--ink-2)}
         <li>An error-analysis pass flagging <em>high-confidence wrong</em> preference predictions — the
             failure mode that matters, since those push training hardest in the wrong direction.</li>
         <li>A Gradio demo with live action prediction and recorded Hopper rollouts.</li>
+        <li>A <strong>FastAPI inference API</strong> with Pydantic validation, in a Docker image that GitHub
+            Actions builds, smoke-tests and publishes to GitHub Container Registry on every change.</li>
       </ul>
-      <p><strong>My part:</strong> the Decision Transformer and the preference pipeline.</p>
+      <p><strong>My part:</strong> the Decision Transformer and the preference pipeline. After the course I
+        also found and fixed the evaluation bugs described below and built the deployment.</p>
 
       <h4>The two policies, running</h4>
       <figure class="vid">
@@ -521,9 +524,9 @@ footer a{color:var(--ink-2)}
           <source src="assets/hopper-comparison.mp4" type="video/mp4">
         </video>
         <figcaption>
-          Both checkpoints replayed from the repository in Gymnasium MuJoCo. The Decision Transformer
-          falls at step 20 for a return of 23; the Perception Transformer keeps hopping past 2,900.
-          Same task, same evaluation loop.
+          Same seed, same target return, both trained on the D4RL Hopper medium data and replayed in
+          Gymnasium MuJoCo. The Decision Transformer hops for 160 steps (return 480.5) and the Perception
+          Transformer for 175 (return 558.2). Both still fall before the episode limit.
         </figcaption>
       </figure>
 
@@ -532,31 +535,37 @@ footer a{color:var(--ink-2)}
         <table>
           <thead><tr><th>Split</th><th>Model</th><th style="text-align:right">Avg return</th><th class="barcell">Relative</th></tr></thead>
           <tbody>
-            <tr><td>Simple</td><td>Decision Transformer</td><td class="num">60.4</td><td><i class="bar" style="--w:10%"></i></td></tr>
-            <tr><td>Simple</td><td>DT + Preference</td><td class="num">76.2</td><td><i class="bar" style="--w:13%"></i></td></tr>
-            <tr><td>Simple</td><td>Perception Transformer</td><td class="num">593.5</td><td><i class="bar win" style="--w:100%"></i></td></tr>
-            <tr><td>Medium</td><td>Decision Transformer</td><td class="num">24.0</td><td><i class="bar" style="--w:4%"></i></td></tr>
-            <tr><td>Medium</td><td>DT + Preference</td><td class="num">67.4</td><td><i class="bar" style="--w:11%"></i></td></tr>
-            <tr><td>Medium</td><td>Perception Transformer</td><td class="num">555.3</td><td><i class="bar win" style="--w:94%"></i></td></tr>
-            <tr><td>Expert</td><td>Decision Transformer</td><td class="num">68.6</td><td><i class="bar" style="--w:12%"></i></td></tr>
-            <tr class="win"><td>Expert</td><td>DT + Preference</td><td class="num">88.3</td><td><i class="bar win" style="--w:15%"></i></td></tr>
-            <tr><td>Expert</td><td>Perception Transformer</td><td class="num">80.6</td><td><i class="bar" style="--w:14%"></i></td></tr>
+            <tr><td>Simple</td><td>Decision Transformer</td><td class="num">834.9</td><td><i class="bar" style="--w:97%"></i></td></tr>
+            <tr class="win"><td>Simple</td><td>DT + Preference</td><td class="num">861.0</td><td><i class="bar win" style="--w:100%"></i></td></tr>
+            <tr><td>Simple</td><td>Perception Transformer</td><td class="num">544.6</td><td><i class="bar" style="--w:63%"></i></td></tr>
+            <tr><td>Medium</td><td>Decision Transformer</td><td class="num">476.1</td><td><i class="bar" style="--w:55%"></i></td></tr>
+            <tr><td>Medium</td><td>DT + Preference</td><td class="num">442.4</td><td><i class="bar" style="--w:51%"></i></td></tr>
+            <tr class="win"><td>Medium</td><td>Perception Transformer</td><td class="num">552.3</td><td><i class="bar win" style="--w:64%"></i></td></tr>
+            <tr><td>Expert</td><td>Decision Transformer</td><td class="num">429.7</td><td><i class="bar" style="--w:50%"></i></td></tr>
+            <tr class="win"><td>Expert</td><td>DT + Preference</td><td class="num">571.4</td><td><i class="bar win" style="--w:66%"></i></td></tr>
+            <tr><td>Expert</td><td>Perception Transformer</td><td class="num">47.7</td><td><i class="bar" style="--w:6%"></i></td></tr>
           </tbody>
         </table>
       </div>
 
       <p style="margin-top:20px">
-        Preference weighting improved the Decision Transformer on <strong>all three splits</strong> —
-        largest on medium (24.0 → 67.4), and on expert it produced the best policy overall. But the much
-        simpler one-step Perception Transformer dominated on simple and medium. That's the genuinely
-        interesting result: under a bounded training budget, the architecture that needs no history was
-        far easier to train than the one that reasons over it.
+        <strong>These numbers come after a bug fix.</strong> The first benchmark scored the Decision
+        Transformer at 24.0 on medium, and the hopper fell within about 20 steps. Three bugs caused it:
+        states were never normalized, the action history was shifted by one step at evaluation, and
+        timesteps restarted at zero for every window. Fixing them raised the Decision Transformer's return
+        6–20× on every split (24.0 → 476.1 on medium).
+      </p>
+      <p>
+        The fix also changed the conclusions. Preference weighting now helps on simple and expert
+        (+33% on expert, the best policy on that split) and slightly hurts on medium. The history-free
+        Perception Transformer only leads on medium and falls apart on expert.
       </p>
 
       <p class="note">
-        <strong>Scope, stated plainly:</strong> 10 epochs, a bounded 10,000-sample budget per split, 5
-        evaluation episodes, single seed, no hyperparameter tuning. Directional results, not a tuned
-        benchmark — the repo's report says so and lists seed averaging as the first fix.
+        <strong>Scope, stated plainly:</strong> 10 epochs, a 10,000-window training budget per split, 10
+        evaluation episodes, one training run per model, no hyperparameter tuning. Returns on the simple
+        split vary a lot between episodes (standard deviation above 200 for both DT models), so that
+        ranking is not reliable. Directional results, not a tuned benchmark.
       </p>
 
       <div class="tags">
@@ -564,6 +573,7 @@ footer a{color:var(--ink-2)}
         <span class="tag">Offline RL</span><span class="tag">RLHF / preference learning</span>
         <span class="tag">Bradley–Terry</span><span class="tag">Perceiver</span>
         <span class="tag">D4RL / Minari</span><span class="tag">Gymnasium MuJoCo</span><span class="tag">Gradio</span>
+        <span class="tag">FastAPI</span><span class="tag">Docker</span><span class="tag">GitHub Actions</span>
       </div>
 
       <div class="proj-links">
@@ -695,45 +705,45 @@ footer a{color:var(--ink-2)}
     <article class="proj reveal" data-reveal id="nn-scratch">
       <div class="proj-top">
         <div>
-          <h3>Neural Network from Scratch — NumPy to PyTorch</h3>
-          <div class="meta">Backpropagation by hand · self-directed · Dec 2025 – Jan 2026</div>
+          <h3>Neural Networks &amp; Language Models from Scratch</h3>
+          <div class="meta">Autograd and language modeling · self-directed · following Karpathy's Zero to Hero · Sep 2026</div>
         </div>
-        <span class="badge">Complete</span>
+        <span class="badge wip">Ongoing</span>
       </div>
 
       <p>
-        Build the same network twice. First in pure NumPy — forward pass, chain-rule backpropagation,
-        BCE and MSE losses, SGD, all derived by hand with no autograd. Then rebuild the identical
-        architecture with <code>torch.nn.Module</code>.
+        Most ML work means calling <code>.backward()</code> and trusting it. I wanted to see what it does,
+        so I am building the pieces myself, one lecture at a time, and checking each one against PyTorch.
       </p>
 
-      <h4>The part that matters</h4>
+      <h4>What I built</h4>
       <ul class="tight">
-        <li>Both implementations receive identical inputs and identical initial weights, and their
-            gradients are compared elementwise. <strong>They match.</strong></li>
-        <li>That check is what separates "I implemented backpropagation" from "I implemented it
-            <em>correctly</em>" — it catches the failure where a sign error or a missing transpose
-            still produces a loss curve that goes down, just to the wrong place.</li>
-        <li>Trained on MNIST digits, with the NumPy version writing its own parameter initialisation and
-            forward and backward passes end to end.</li>
-        <li>The same repo also includes a scalar autograd engine built from scratch —
-            the mechanism this project's <code>.backward()</code> calls are built on top of.</li>
+        <li><strong>A scalar autograd engine (micrograd)</strong> — a <code>Value</code> class that records
+            the computation graph, per-operation local gradients, and a <code>.backward()</code> that
+            topologically sorts the graph and applies the chain rule in reverse. A tiny MLP built from
+            <code>Value</code> objects trains with plain gradient descent.</li>
+        <li><strong>A check against PyTorch</strong> — the same tanh neuron built with
+            <code>torch</code> tensors gives the same output (0.7071) and the same gradients
+            (x1 −1.5, w1 1.0, x2 0.5, w2 0.0).</li>
+        <li><strong>A character-level bigram language model</strong>, built twice on 228,146 bigrams from
+            ~32,000 names: once by counting (negative log-likelihood 2.454) and once as a one-layer neural
+            net trained with gradient descent (2.490), against 3.296 for uniform guessing.</li>
       </ul>
 
       <p class="note">
-        Anyone can call <code>.backward()</code>. Debugging a run that isn't converging is guesswork if
-        that call is a black box — knowing the gradient into a sigmoid saturates when its input is
-        large, because I derived that term myself, is the difference between "try a lower learning rate"
-        and knowing where to look.
+        Multiplying a one-hot vector by the weight matrix just picks one row, so the neural net ends up
+        learning the same table that counting builds directly, and regularization plays the role of
+        add-one smoothing. Next: an MLP with learned character embeddings, then a small GPT.
       </p>
 
       <div class="tags">
-        <span class="tag">NumPy</span><span class="tag">PyTorch</span><span class="tag">Backpropagation</span>
-        <span class="tag">Gradient checking</span><span class="tag">SGD</span>
+        <span class="tag">Python</span><span class="tag">PyTorch</span><span class="tag">Backpropagation</span>
+        <span class="tag">Autograd</span><span class="tag">Language modeling</span><span class="tag">Gradient checking</span>
       </div>
 
       <div class="proj-links">
-        <a href="https://github.com/its-Ravi-Singh/neural-networks-from-scratch" target="_blank" rel="noopener">Code <span>→</span></a>
+        <a href="https://github.com/its-Ravi-Singh/neural-networks-from-scratch" target="_blank" rel="noopener">Autograd code <span>→</span></a>
+        <a href="https://github.com/its-Ravi-Singh/char-level-language-model" target="_blank" rel="noopener">Language model code <span>→</span></a>
       </div>
     </article>
 
@@ -1094,7 +1104,7 @@ footer a{color:var(--ink-2)}
       </div>
       <div class="skillgroup">
         <h5>Machine Learning &amp; AI</h5>
-        <p>PyTorch · scikit-learn · Deep learning · Transformers &amp; attention · CNNs · Offline RL · Preference learning (RLHF) · Model evaluation · Model interpretability · Forward hooks · Reproducible experiments · Model deployment (Gradio)</p>
+        <p>PyTorch · scikit-learn · Deep learning · Transformers &amp; attention · CNNs · Offline RL · Preference learning and pairwise ranking (Bradley–Terry) · Language modeling · Model evaluation · Model interpretability · Forward hooks · Reproducible experiments · Model deployment (FastAPI, Gradio)</p>
       </div>
       <div class="skillgroup">
         <h5>Languages</h5>
@@ -1107,7 +1117,7 @@ footer a{color:var(--ink-2)}
       <div class="skillgroup">
         <h5>Data &amp; Infrastructure</h5>
         <p>PostgreSQL · Elasticsearch · schema design &amp; migration · query optimization · database indexing ·
-           ETL pipelines (Pandas, NumPy) · Docker · Jenkins · Maven · GCP · Git / GitHub · Linux</p>
+           ETL pipelines (Pandas, NumPy) · PySpark · Hadoop MapReduce · Docker · GitHub Actions (CI) · Jenkins · Maven · AWS · GCP · Git / GitHub · Linux</p>
       </div>
       <div class="skillgroup">
         <h5>Frontend &amp; UI</h5>
@@ -1131,8 +1141,9 @@ footer a{color:var(--ink-2)}
         <div class="xp-what">
           <h3>MS, Computer Science (AI/ML)</h3>
           <p class="org">University at Buffalo · GPA 3.7/4.0 · graduating December 2026</p>
-          <p>Coursework in deep learning, machine learning and reinforcement learning, plus an independent
-             study in agentic AI and RAG for autonomous driving. Project work in offline RL, sequence models,
+          <p>Coursework in deep learning, machine learning, reinforcement learning, computer vision and
+             data-intensive computing (Hadoop, Spark), plus an independent study in agentic AI and
+             retrieval for autonomous driving. Project work in offline RL, sequence models,
              medical image classification, and database systems. Available for full-time roles from early 2027.</p>
         </div>
       </div>
